@@ -25,20 +25,28 @@ export default function HeroSequence() {
   const currentFrameRef = useRef(0);
   const frameCount = 117; // Da Frame_000 a Frame_116
   
-  // Funzione core di calibrazione matematica per disegnare il frame (Object-fit: cover logica)
+  // Funzione core di calibrazione matematica per disegnare il frame
   const renderFrame = (index: number) => {
-    if (!canvasRef.current || !imagesRef.current[index]) return;
+    if (!canvasRef.current) return;
     
+    // Trova il frame caricato più vicino (se l'utente scrolla veloce e il frame esatto non è ancora pronto)
+    let img = imagesRef.current[index];
+    if (!img || !img.complete || img.naturalWidth === 0) {
+      // Fallback: cerca all'indietro l'ultimo frame caricato con successo per evitare sfarfallii
+      for (let i = index - 1; i >= 0; i--) {
+        if (imagesRef.current[i]?.complete && imagesRef.current[i].naturalWidth > 0) {
+          img = imagesRef.current[i];
+          break;
+        }
+      }
+    }
+    
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+
     const canvas = canvasRef.current;
-    // alpha: false ottimizza la pipeline grafica del browser per canvas totalmente opachi
     const ctx = canvas.getContext("2d", { alpha: false }); 
     if (!ctx) return;
     
-    const img = imagesRef.current[index];
-    
-    // Fallback di sicurezza
-    if (!img.complete || img.naturalWidth === 0) return;
-
     const cw = canvas.width;
     const ch = canvas.height;
     const iw = img.width;
@@ -57,41 +65,54 @@ export default function HeroSequence() {
     currentFrameRef.current = index;
   };
 
-  // Preloading asincrono dei frame (evita colli di bottiglia all'avvio)
+  // Preloading asincrono OTTIMIZZATO per Vercel/Produzione
   useEffect(() => {
     let loadedCount = 0;
     const tempImages: HTMLImageElement[] = [];
 
-    const loadImages = () => {
-      for (let i = 0; i < frameCount; i++) {
-        const img = new Image();
-        const indexStr = i.toString().padStart(3, "0");
-        img.src = `/hero/sequence/Frame_${indexStr}.webp`;
+    // Pre-popoliamo l'array di immagini vuote per mantenere l'ordine
+    for (let i = 0; i < frameCount; i++) {
+      tempImages.push(new Image());
+    }
+    imagesRef.current = tempImages;
 
+    // Funzione per caricare silenziosamente i frame successivi al primo
+    const loadRestOfFrames = () => {
+      for (let i = 1; i < frameCount; i++) {
+        const img = tempImages[i];
+        const indexStr = i.toString().padStart(3, "0");
+        
         img.onload = () => {
           loadedCount++;
           setLoadingProgress(Math.round((loadedCount / frameCount) * 100));
-          
-          if (loadedCount === frameCount) {
-            imagesRef.current = tempImages;
-            setIsLoaded(true);
-          }
         };
-
         img.onerror = () => {
-          console.error(`Impossibile caricare Frame_${indexStr}.webp`);
           loadedCount++;
-          if (loadedCount === frameCount) {
-            imagesRef.current = tempImages;
-            setIsLoaded(true);
-          }
         };
         
-        tempImages.push(img);
+        // Assegnando la src, il browser accoda il download in background
+        img.src = `/hero/sequence/Frame_${indexStr}.webp`;
       }
     };
 
-    loadImages();
+    // PRIORITÀ MASSIMA: Carichiamo solo il primissimo frame per sbloccare subito la UI
+    const firstImg = tempImages[0];
+    firstImg.onload = () => {
+      loadedCount++;
+      setIsLoaded(true); // Sblocca immediatamente lo spinner di caricamento
+      requestAnimationFrame(() => renderFrame(0)); // Disegna istantaneamente il primo frame
+      loadRestOfFrames(); // Avvia il download massivo del resto della sequenza in background
+    };
+    
+    firstImg.onerror = () => {
+      console.error("Errore caricamento frame 0. Sblocco d'emergenza della UI.");
+      setIsLoaded(true);
+      loadRestOfFrames();
+    };
+    
+    // Innesca il download del primo frame
+    firstImg.src = `/hero/sequence/Frame_000.webp`;
+
   }, []);
 
   // Handler del resize perricalibrare le coordinate di GSAP
