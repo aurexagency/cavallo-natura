@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Alias semantici Step 2 ─────────────────────────────────── */
+  --color-sand:    #F0E4D0;   /* Sfondo beige/panna chiaro          */
+  --color-saddle:  #6B4226;   /* Marrone sella – testo principale   */
+  --color-wine:    #722F37;   /* Rosso borgogna – accenti e titoli  */
+  --color-pine:    #3A5A40;   /* Verde pino                         */
+
+  /* ─── Palette completa Cavallo Natura (Step 1 – mantenuta) ──── */
+  --color-cn-brown:     #6B4226;
+  --color-cn-brown-lt:  #8B5E3C;
+  --color-cn-sand:      #D4B896;
+  --color-cn-sand-lt:   #F0E4D0;
+  --color-cn-pine:      #3A5A40;
+  --color-cn-pine-lt:   #52734D;
+  --color-cn-cream:     #FAF7F2;
+  --color-cn-charcoal:  #2C2416;
+  --color-cn-gold:      #C9A84C;
+  --color-cn-white:     #FFFFFF;
+
+  /* ─── Typography ────────────────────────────────────────────── */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body:    "Inter", system-ui, sans-serif;
+
+  /* ─── Radius tokens ─────────────────────────────────────────── */
+  --radius-card:  0.75rem;
+  --radius-btn:   0.375rem;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+    font-family: var(--font-body);
+    color: var(--color-cn-charcoal);
+  }
+
+  body {
+    background-color: var(--color-sand);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
