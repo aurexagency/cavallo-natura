@@ -91,7 +91,7 @@ export default function HeroSequence() {
         };
         
         // Assegnando la src, il browser accoda il download in background
-        img.src = `/hero/sequence/Frame_${indexStr}.webp`;
+        img.src = `/hero/Sequence/Frame_${indexStr}.webp`;
       }
     };
 
@@ -111,7 +111,7 @@ export default function HeroSequence() {
     };
     
     // Innesca il download del primo frame
-    firstImg.src = `/hero/sequence/Frame_000.webp`;
+    firstImg.src = `/hero/Sequence/Frame_000.webp`;
 
   }, []);
 
