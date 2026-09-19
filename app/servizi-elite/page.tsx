@@ -23,10 +23,10 @@ const eliteServices: EliteService[] = [
   {
     id: "calici-al-tramonto",
     title: "Calici al Tramonto",
-    description: "Concediti il lusso di un brindisi esclusivo in riva al mare mentre il sole scompare all'orizzonte. Un'esperienza sensoriale unica dove il profumo della salsedine, la maestosità dei nostri cavalli e l'eccellenza dei vini toscani si fondono in un momento di pura magia.",
+    description: "Concediti il lusso di un brindisi esclusivo in riva al mare mentre il sole scompare all'orizzonte. Un'esperienza sensoriale unica dove il profumo della salsedine, la maestosità dei nostri cavalli e il fresco drink che hai scelto si fondono in un momento di pura magia.",
     imageSrc: "/servizi d'elite/calici al tramonto.jpg",
     imageAlt: "Brindisi elegante al tramonto in spiaggia con cavalli sullo sfondo",
-    ctaText: "Richiedi disponibilità",
+    ctaText: "Prenota",
     href: "/contatti?servizio=calici-tramonto"
   },
   {
@@ -35,7 +35,7 @@ const eliteServices: EliteService[] = [
     description: "Sorprendi chi ami con una dichiarazione indimenticabile. Curiamo ogni minimo dettaglio, dagli allestimenti romantici e riservati sulla sabbia, fino ai percorsi personalizzati al passo, per fare da cornice perfetta al vostro 'Sì' immersi nell'incanto della Maremma.",
     imageSrc: "/servizi d'elite/matrimonio.jpg",
     imageAlt: "Romantica e lussuosa proposta di matrimonio in spiaggia al tramonto",
-    ctaText: "Organizza il tuo momento",
+    ctaText: "Prenota",
     href: "/contatti?servizio=matrimonio"
   },
   {
@@ -44,7 +44,7 @@ const eliteServices: EliteService[] = [
     description: "Cattura l'essenza dell'eleganza attraverso l'obiettivo. Mettiamo a disposizione i nostri magnifici esemplari per shooting professionali, fashion editorial e ritratti d'autore, sfruttando la luce impareggiabile e gli scenari mozzafiato della costa tirrenica.",
     imageSrc: "/servizi d'elite/servizio fotografico.jpg",
     imageAlt: "Shooting fotografico professionale con cavallo andaluso sulla spiaggia",
-    ctaText: "Richiedi un preventivo",
+    ctaText: "Prenota",
     href: "/contatti?servizio=shooting"
   }
 ];
@@ -104,9 +104,12 @@ export default function ServiziElitePage() {
                     </p>
                     
                     {/* Integrazione Componente Call-To-Action */}
-                    <div className="self-start">
-                      <Button as="link" href={service.href} variant="outline" size="lg">
+                    <div className="self-start flex flex-wrap items-center gap-4">
+                      <Button as="link" href={service.href} variant="primary" size="lg">
                         {service.ctaText}
+                      </Button>
+                      <Button as="link" href="#" variant="outline" size="lg">
+                        Scopri i dettagli
                       </Button>
                     </div>
                   </div>

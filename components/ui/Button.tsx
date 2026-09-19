@@ -33,16 +33,29 @@ interface ButtonAsLink extends BaseProps {
 type ButtonProps = ButtonAsButton | ButtonAsAnchor | ButtonAsLink;
 
 // ─── Style maps ───────────────────────────────────────────────────────────────
+//
+// Strategia animazione:
+//   • .btn-animated        — position:relative + overflow:hidden + isolation
+//   • .btn-fill-primary    — ::before con bg saddle che scorre da sinistra (su wine)
+//   • .btn-fill-outline    — ::before con bg saddle che riempie il bordo trasparente
+//
+// Il testo rimane visibile grazie a isolation:isolate + z-index:-1 sul ::before.
+// La transizione è disabilitata via CSS @media (prefers-reduced-motion: reduce).
 
 const variantStyles: Record<Variant, string> = {
   primary:
+    // Sfondo wine di partenza; il fill saddle entra da sinistra al hover
     "bg-[var(--color-wine)] text-white border-2 border-transparent " +
-    "hover:bg-[color-mix(in_srgb,var(--color-wine)_85%,black)] hover:-translate-y-px " +
+    "btn-animated btn-fill-primary " +
+    // Leggero sollevamento + ombra elegante al hover
+    "hover:-translate-y-0.5 hover:shadow-[0_6px_20px_-4px_var(--color-wine)] " +
     "focus-visible:outline-[var(--color-wine)]",
 
   outline:
+    // Sfondo trasparente di partenza; fill saddle entra e il testo diventa bianco
     "bg-transparent text-[var(--color-saddle)] border-2 border-[var(--color-saddle)] " +
-    "hover:bg-[var(--color-saddle)] hover:text-white hover:-translate-y-px " +
+    "btn-animated btn-fill-outline " +
+    "hover:text-white hover:-translate-y-0.5 " +
     "focus-visible:outline-[var(--color-saddle)]",
 };
 
@@ -60,10 +73,11 @@ function buildClassName(variant: Variant, size: Size, extra = ""): string {
     "inline-flex items-center justify-center gap-2",
     "font-semibold tracking-wide",
     "rounded-[var(--radius-btn)]",
-    "transition-all duration-200 ease-out",
+    // Transizione per translate + shadow; il fill ::before è gestito dal CSS
+    "transition-[transform,box-shadow,color] duration-300 ease-out",
     "cursor-pointer select-none",
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3",
-    "active:translate-y-0",
+    "active:translate-y-0 active:shadow-none",
     // Variant & size
     variantStyles[variant],
     sizeStyles[size],

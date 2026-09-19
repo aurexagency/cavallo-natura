@@ -43,3 +43,66 @@
     font-family: var(--font-display);
   }
 }
+
+/* ─── Button: animated fill ─────────────────────────────────────────────────
+   Pseudo-elemento ::before che scorre da sinistra a destra al passaggio del
+   mouse. Usato da .btn-fill-primary e .btn-fill-outline.
+   Il clip overflow è gestito dal wrapper con overflow-hidden.
+   La transizione è disabilitata se l'utente ha prefers-reduced-motion.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Wrapper comune: garantisce che il fill rimanga confinato ai bordi */
+  .btn-animated {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    z-index: 0;
+  }
+
+  .btn-animated::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform: translateX(-102%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-animated:hover::before,
+  .btn-animated:focus-visible::before {
+    transform: translateX(0);
+  }
+
+  /* Primary: il fill è una versione leggermente più scura del wine */
+  .btn-fill-primary::before {
+    background-color: var(--color-saddle);
+  }
+
+  /* Outline: il fill entra con il colore saddle (bg diventa pieno) */
+  .btn-fill-outline::before {
+    background-color: var(--color-saddle);
+  }
+
+  /* ── Rispetta prefers-reduced-motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-animated::before {
+      transition: none;
+    }
+  }
+}
+
+/* ─── Navbar: active tab indicator ──────────────────────────────────────────
+   Elemento assoluto (#nav-indicator) posizionato tramite GSAP.
+   La transizione GSAP viene disabilitata in JS se prefers-reduced-motion.
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+  .nav-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: var(--color-wine);
+    border-radius: 9999px;
+    pointer-events: none;
+  }
+}

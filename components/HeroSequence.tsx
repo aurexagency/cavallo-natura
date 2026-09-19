@@ -14,6 +14,8 @@ if (typeof window !== "undefined") {
 export default function HeroSequence() {
   const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
   
   // Stato per la gestione del caricamento (solo per la UI di caricamento, non per l'animazione)
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -144,26 +146,44 @@ export default function HeroSequence() {
       // Definiamo il playhead (oggetto fittizio) da interpolare
       const playhead = { frame: 0 };
       
-      const st = ScrollTrigger.create({
-        trigger: containerRef.current,
-        // Pinna esattamente quando il contenitore tocca il bordo alto della viewport
-        start: "top top", 
-        // 2. Timing e fluidità: end generosissimo (+4 volte l'altezza viewport)
-        // per diluire i 117 frame in un movimento pacato e controllato (no scatti)
-        end: "+=400%", 
-        pin: true, 
-        // scrub a 1 per ammorbidire perfettamente l'inerzia della rotellina del mouse (interpolazione)
-        scrub: 1, 
-        animation: gsap.to(playhead, {
-          frame: frameCount - 1,
-          snap: "frame", // Assicura che l'indice frame sia un int e non un float
-          ease: "none",  // Timing lineare rigoroso
-          onUpdate: () => renderFrame(playhead.frame), // Update delegato a GSAP
-        }),
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          // Pinna esattamente quando il contenitore tocca il bordo alto della viewport
+          start: "top top", 
+          // 2. Timing e fluidità: end generosissimo (+4 volte l'altezza viewport)
+          // per diluire i 117 frame in un movimento pacato e controllato (no scatti)
+          end: "+=400%", 
+          pin: true, 
+          // scrub a 1 per ammorbidire perfettamente l'inerzia della rotellina del mouse (interpolazione)
+          scrub: 1, 
+        }
       });
 
+      tl.to(playhead, {
+        frame: frameCount - 1,
+        snap: "frame", // Assicura che l'indice frame sia un int e non un float
+        ease: "none",  // Timing lineare rigoroso
+        duration: frameCount, // Usiamo frameCount come durata logica per la timeline
+        onUpdate: () => renderFrame(playhead.frame), // Update delegato a GSAP
+      }, 0);
+
+      // Aggiungiamo l'animazione della CTA al Frame 055 (slide up + fade in)
+      tl.fromTo(ctaRef.current,
+        { autoAlpha: 0, y: 30 },
+        { autoAlpha: 1, y: 0, duration: 15, ease: "power2.out" },
+        55
+      );
+
+      // Aggiungiamo l'animazione del Titolo al Frame 086 (fade in elegante)
+      tl.fromTo(titleRef.current,
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 20, ease: "power2.inOut" },
+        86
+      );
+
       return () => {
-        st.kill(); 
+        tl.kill(); 
       };
     });
 
@@ -171,6 +191,7 @@ export default function HeroSequence() {
     mm.add("(prefers-reduced-motion: reduce)", () => {
       // Render statico dell'ultimo o primo frame per non omettere nulla visivamente, ma bloccando lo scroll finto
       renderFrame(0);
+      gsap.set([titleRef.current, ctaRef.current], { autoAlpha: 1, y: 0 });
     });
 
     return () => mm.revert();
@@ -204,35 +225,35 @@ export default function HeroSequence() {
       {/* Velo per Leggibilità (mix-blend-multiply per amalgama cinematografica) */}
       <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none mix-blend-multiply" />
 
-      {/* Contenuti di Riferimento */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4 text-center pointer-events-none">
-        <p className="mb-4 text-xs sm:text-sm font-semibold tracking-[0.35em] uppercase text-white drop-shadow-md">
-          Centro Equestre · Marina di Grosseto
-        </p>
-
-        <h1
-          id="hero-heading"
-          className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-tight max-w-5xl mb-6 text-white drop-shadow-lg"
-        >
-          Benvenuti a{" "}
-          <span className="text-[var(--color-sand)]">Cavallo Natura</span>
-        </h1>
-
-        <p className="text-lg sm:text-xl md:text-2xl max-w-2xl leading-relaxed mb-10 text-white/95 drop-shadow-md font-light">
-          Centro equestre d'élite immerso nella Maremma Toscana, tra la frescura della pineta del Tombolo e l'infinito delle spiagge tirreniche.
-        </p>
-
-        <div className="pointer-events-auto">
-          <Button
-            as="link"
-            href="/esperienze"
-            variant="outline"
-            className="!border-white !text-white hover:!bg-white hover:!text-[var(--color-saddle)] tracking-wider"
-            size="lg"
+      {/* Contenuti di Riferimento (Testi e CTA separati per posizionamento e timeline indipendenti) */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        
+        {/* Titolo in alto per liberare la visuale centrale */}
+        <div className="absolute top-0 left-0 w-full pt-10 md:pt-16 flex justify-center px-4 text-center">
+          <h1
+            ref={titleRef}
+            id="hero-heading"
+            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-tight text-white drop-shadow-[-6px_6px_10px_rgba(0,0,0,0.8)] opacity-0"
           >
-            SCOPRI LE ESPERIENZE
-          </Button>
+            Benvenuti
+          </h1>
         </div>
+
+        {/* Pulsante CTA posizionato strategicamente in basso */}
+        <div className="absolute bottom-0 left-0 w-full pb-24 md:pb-32 flex justify-center px-4 pointer-events-auto">
+          <div ref={ctaRef} className="opacity-0">
+            <Button
+              as="link"
+              href="/esperienze"
+              variant="outline"
+              className="!border-white !text-white hover:!bg-white hover:!text-[var(--color-saddle)] tracking-wider drop-shadow-md"
+              size="lg"
+            >
+              SCOPRI LE ESPERIENZE
+            </Button>
+          </div>
+        </div>
+
       </div>
     </section>
   );

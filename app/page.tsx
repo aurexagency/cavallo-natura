@@ -21,7 +21,7 @@ const homeExperiences: ExperienceCardProps[] = [
   },
   {
     title: "Calici al Tramonto",
-    description: "Un'esperienza d'élite esclusiva: raggiungi a cavallo la riva del mare e brinda al tramonto con un calice di vino locale. Romanticismo puro in Maremma.",
+    description: "Un'esperienza d'élite esclusiva: raggiungi a cavallo la riva del mare e brinda al tramonto con il tuo drink preferito. Romanticismo puro in Maremma.",
     imageSrc: "/home/calici al tramonto.jpg",
     imageAlt: "Cavalieri con calici al tramonto sulla spiaggia",
     href: "/servizi-elite",

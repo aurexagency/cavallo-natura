@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
+// ─── Dati & Costanti ─────────────────────────────────────────────────────────
 
 const navLinks = [
-  { href: "/",                    label: "Home" },
-  { href: "/chi-siamo",          label: "Chi Siamo" },
-  { href: "/esperienze",         label: "Esperienze a Cavallo" },
-  { href: "/servizi-elite",      label: "Servizi Elite" },
-  { href: "/pensione-cavalli",   label: "Pensione per Cavalli" },
-  { href: "/gallery",            label: "Gallery" },
+  { href: "/",                   label: "Home" },
+  { href: "/chi-siamo",         label: "Chi Siamo" },
+  { href: "/esperienze",        label: "Esperienze a Cavallo" },
+  { href: "/servizi-elite",     label: "Servizi Elite" },
+  { href: "/pensione-cavalli",  label: "Pensione per Cavalli" },
+  { href: "/gallery",           label: "Gallery" },
 ];
 
 const WHATSAPP_NUMBER = "393289784018";
@@ -18,14 +22,14 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Ciao%20Cavallo%20Nat
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 
-function MenuIcon({ className, isOpen }: { className?: string, isOpen: boolean }) {
+function MenuIcon({ className, isOpen }: { className?: string; isOpen: boolean }) {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      fill="none" 
-      viewBox="0 0 24 24" 
-      strokeWidth={1.5} 
-      stroke="currentColor" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={1.5}
+      stroke="currentColor"
       className={className}
       aria-hidden="true"
     >
@@ -52,6 +56,9 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
+// ─── HorseLogo ────────────────────────────────────────────────────────────────
+// Badge traslucido bianco + scritta candida — nessuna prop dinamica di colore.
+
 function HorseLogo({ onClick }: { onClick?: () => void }) {
   return (
     <Link
@@ -60,68 +67,150 @@ function HorseLogo({ onClick }: { onClick?: () => void }) {
       aria-label="Cavallo Natura – Homepage"
       onClick={onClick}
     >
+      {/* Badge CN — sfondo scuro traslucido con bordo bianco sottile */}
       <div
-        className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-        style={{ backgroundColor: "var(--color-cn-brown)" }}
+        className="w-9 h-9 rounded-full border border-white/30 bg-white/10 flex items-center justify-center shrink-0"
         aria-hidden="true"
       >
-        <span className="text-white font-bold text-sm font-display">CN</span>
+        <span className="text-white font-display font-semibold text-xs">CN</span>
       </div>
-      <span
-        className="text-xl font-display font-semibold leading-tight tracking-wide"
-        style={{ color: "var(--color-cn-brown)" }}
-      >
+
+      {/* Brand name — bianco candido */}
+      <span className="text-lg md:text-xl font-display font-semibold tracking-wide text-white">
         Cavallo Natura
       </span>
     </Link>
   );
 }
 
-// ─── Navbar (Client Component) ────────────────────────────────────────────────
+// ─── moveIndicator (GSAP helper) ─────────────────────────────────────────────
+
+/**
+ * Sposta l'indicatore .nav-indicator sul bounding rect del link target.
+ * Se prefersReducedMotion è attivo, usa duration 0.
+ */
+function moveIndicator(
+  indicator: HTMLElement,
+  target: HTMLElement,
+  list: HTMLElement,
+  prefersReducedMotion: boolean
+) {
+  const listRect   = list.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+
+  gsap.to(indicator, {
+    left:      targetRect.left - listRect.left,
+    width:     targetRect.width,
+    duration:  prefersReducedMotion ? 0 : 0.35,
+    ease:      "power2.out",
+    overwrite: "auto",
+  });
+}
+
+// ─── Navbar ───────────────────────────────────────────────────────────────────
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  // Chiudi il menu automaticamente quando l'utente naviga in una nuova pagina
+  // prefers-reduced-motion — valutato una volta sola, usato dall'indicatore GSAP
+  const prefersReducedMotion = useRef(
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false
+  );
+
+  // ── GSAP indicator refs ───────────────────────────────────────────────────
+  const navListRef   = useRef<HTMLUListElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Posiziona l'indicatore sul link attivo corrente.
+   * Chiamato sia all'init che a ogni cambio di pathname.
+   */
+  const positionOnActive = useCallback(() => {
+    const list      = navListRef.current;
+    const indicator = indicatorRef.current;
+    if (!list || !indicator) return;
+
+    const activeLink = list.querySelector<HTMLAnchorElement>("[data-active='true']");
+    if (activeLink) {
+      moveIndicator(indicator, activeLink, list, prefersReducedMotion.current);
+      gsap.set(indicator, { opacity: 1 });
+    } else {
+      gsap.set(indicator, { opacity: 0 });
+    }
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Posizionamento iniziale senza animazione (snap immediato)
+  useGSAP(() => {
+    const list      = navListRef.current;
+    const indicator = indicatorRef.current;
+    if (!list || !indicator) return;
+
+    const activeLink = list.querySelector<HTMLAnchorElement>("[data-active='true']");
+    if (activeLink) {
+      const listRect   = list.getBoundingClientRect();
+      const targetRect = activeLink.getBoundingClientRect();
+      gsap.set(indicator, {
+        left:    targetRect.left - listRect.left,
+        width:   targetRect.width,
+        opacity: 1,
+      });
+    } else {
+      gsap.set(indicator, { opacity: 0 });
+    }
+  }, { dependencies: [], revertOnUpdate: false });
+
+  // Riposiziona con animazione a ogni cambio di route
+  useEffect(() => {
+    const id = requestAnimationFrame(positionOnActive);
+    return () => cancelAnimationFrame(id);
+  }, [positionOnActive]);
+
+  // Chiudi il menu mobile al cambio di pagina
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Previene lo scroll del body quando il menu è aperto per migliorare l'UX
+  // Blocca lo scroll del body quando il menu mobile è aperto
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
+    return () => { document.body.style.overflow = "unset"; };
   }, [isMobileMenuOpen]);
 
+  // ── Handler hover — anteprima indicatore ─────────────────────────────────
+  const handleLinkMouseEnter = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    const list      = navListRef.current;
+    const indicator = indicatorRef.current;
+    if (!list || !indicator) return;
+    moveIndicator(indicator, e.currentTarget, list, prefersReducedMotion.current);
+    gsap.set(indicator, { opacity: 1 });
+  }, []);
+
+  const handleListMouseLeave = useCallback(() => {
+    positionOnActive();
+  }, [positionOnActive]);
+
+  // ─────────────────────────────────────────────────────────────────────────
   return (
     <header
-      className="sticky top-0 z-50 w-full border-b transition-colors duration-300"
-      style={{
-        backgroundColor: "var(--color-cn-cream)",
-        borderColor: "var(--color-cn-sand)",
-      }}
+      className="fixed top-0 left-0 w-full z-50 bg-black/25 backdrop-blur-[3px] border-b border-white/10 transition-none"
     >
-      {/* 
-        La <nav> principale mantiene un z-index superiore al sottomenu mobile 
-        in modo che l'header (logo + burger) sia sempre in cima
+      {/*
+        La <nav> ha z-50 relativo all'header per stare sopra al menu mobile
+        che usa z-40. Il bg è ereditato dall'<header> — nessun bg inline qui.
       */}
       <nav
-        className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8 bg-[var(--color-cn-cream)]"
+        className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8"
         aria-label="Navigazione principale"
       >
-        
-        <div className="flex items-center gap-4 lg:gap-0">
-          {/* ── Hamburger Menu Button (Mobile) ── */}
+        {/* ── Sinistra: hamburger + logo ── */}
+        <div className="flex items-center gap-3 lg:gap-0">
+          {/* Hamburger (solo mobile) */}
           <button
             type="button"
-            className="lg:hidden p-2 -ml-2 rounded-md text-[var(--color-saddle)] hover:bg-[var(--color-sand)] hover:text-[var(--color-wine)] focus:outline-none focus:ring-2 focus:ring-[var(--color-wine)] focus:ring-inset transition-colors"
+            className="lg:hidden p-2 -ml-2 rounded-md text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/40 focus:ring-inset transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-expanded={isMobileMenuOpen}
             aria-label="Apri menu principale"
@@ -129,23 +218,46 @@ export default function Navbar() {
             <MenuIcon className="w-6 h-6" isOpen={isMobileMenuOpen} />
           </button>
 
-          {/* ── Logo ── */}
+          {/* Logo */}
           <HorseLogo onClick={() => setIsMobileMenuOpen(false)} />
         </div>
 
-        {/* ── Nav links (Desktop) ── */}
-        <ul className="hidden lg:flex items-center gap-1" role="list">
+        {/* ── Centro: link desktop ── */}
+        {/*
+          La <ul> è position:relative per ancorare correttamente
+          l'indicatore assoluto posizionato da GSAP.
+        */}
+        <ul
+          ref={navListRef}
+          className="hidden lg:flex items-center gap-1 relative"
+          role="list"
+          onMouseLeave={handleListMouseLeave}
+        >
+          {/*
+            Indicatore scorrevole — 2px bianchi animati da GSAP.
+            Il colore è fisso (white): nessuna variabile calcolata.
+          */}
+          <div
+            ref={indicatorRef}
+            className="nav-indicator bg-white"
+            aria-hidden="true"
+          />
+
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href;
             return (
               <li key={href}>
                 <Link
                   href={href}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                  data-active={isActive ? "true" : undefined}
+                  onMouseEnter={handleLinkMouseEnter}
+                  className={
                     isActive
-                      ? "text-[var(--color-wine)] bg-[var(--color-sand)]"
-                      : "text-[var(--color-cn-charcoal)] hover:text-[var(--color-wine)] hover:bg-[var(--color-sand)]/50"
-                  }`}
+                      // Stato attivo: bianco pieno + sottolineatura border-b
+                      ? "relative px-3 py-2 pb-1 text-sm font-semibold text-white border-b-2 border-white transition-colors duration-200"
+                      // Stato idle: bianco/85, full white al hover
+                      : "relative px-3 py-2 pb-3 text-sm font-medium text-white/85 hover:text-white transition-colors duration-200"
+                  }
                 >
                   {label}
                 </Link>
@@ -154,13 +266,13 @@ export default function Navbar() {
           })}
         </ul>
 
-        {/* ── WhatsApp CTA ── */}
+        {/* ── Destra: CTA WhatsApp ── */}
         <a
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contattaci su WhatsApp"
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90 shrink-0"
+          className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white hover:opacity-90 shrink-0 transition-opacity duration-200"
           style={{ backgroundColor: "#25D366" }}
         >
           <WhatsAppIcon className="w-5 h-5" />
@@ -168,13 +280,17 @@ export default function Navbar() {
         </a>
       </nav>
 
-      {/* ── Mobile Menu Dropdown ── */}
-      <div 
-        className={`lg:hidden fixed inset-0 z-40 bg-[var(--color-cn-cream)] transition-transform duration-300 ease-in-out pt-[70px] ${
+      {/* ── Menu mobile a tendina ── */}
+      {/*
+        z-40 — sotto alla <nav> (z-50) così il burger rimane sempre cliccabile.
+        Sfondo scuro semitrasparente + blur per coerenza col tema dark.
+      */}
+      <div
+        className={`lg:hidden fixed inset-0 z-40 bg-neutral-950/95 backdrop-blur-md transition-transform duration-300 ease-in-out pt-[64px] ${
           isMobileMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
       >
-        <div className="h-full overflow-y-auto px-4 py-6 sm:px-6 flex flex-col justify-between pb-24">
+        <div className="h-full overflow-y-auto px-4 py-6 sm:px-6 pb-24">
           <ul className="flex flex-col gap-2" role="list">
             {navLinks.map(({ href, label }) => {
               const isActive = pathname === href;
@@ -183,9 +299,9 @@ export default function Navbar() {
                   <Link
                     href={href}
                     className={`block px-5 py-4 text-xl font-display font-medium rounded-2xl transition-colors duration-200 ${
-                      isActive 
-                        ? "text-[var(--color-wine)] bg-[var(--color-sand)] shadow-sm" 
-                        : "text-[var(--color-saddle)] hover:bg-[var(--color-sand)]/50"
+                      isActive
+                        ? "text-white bg-white/10 border border-white/20"
+                        : "text-white/80 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {label}

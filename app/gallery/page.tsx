@@ -42,7 +42,6 @@ const galleryData: GalleryExperience[] = [
     id: 'per-esperti',
     title: 'Per Esperti',
     images: [
-      { src: '/gallery/per esperti/1.jpg', alt: 'Galoppo entusiasmante in spiaggia per cavalieri esperti' },
       { src: '/gallery/per esperti/2.jpeg', alt: 'Cavaliere professionista che doma il cavallo sulle onde' },
     ]
   },
