@@ -38,6 +38,13 @@ const experiencesData: ExperienceCardProps[] = [
     imageAlt: "Cavaliere esperto al galoppo veloce sulla spiaggia maremmana",
     href: "/esperienze/per-esperti",
     badge: "Avanzato",
+  },
+  {
+    title: "I servizi D'elite",
+    description: "",
+    imageSrc: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+    imageAlt: "I servizi D'elite",
+    href: "/servizi-elite",
   }
 ];
 
