@@ -12,9 +12,8 @@ const navLinks = [
   { href: "/",                   label: "Home" },
   { href: "/chi-siamo",         label: "Chi Siamo" },
   { href: "/esperienze",        label: "Esperienze a Cavallo" },
-  { href: "/servizi-elite",     label: "Servizi Elite" },
   { href: "/pensione-cavalli",  label: "Pensione per Cavalli" },
-  { href: "/gallery",           label: "Gallery" },
+  { href: "/accademy",          label: "Accademy" },
 ];
 
 const WHATSAPP_NUMBER = "393289784018";
