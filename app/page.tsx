@@ -28,15 +28,6 @@ const homeExperiences: ExperienceCardProps[] = [
     badge: "Elite",
     ctaLabel: "Prenota l'esperienza &rarr;",
   },
-  {
-    title: "In Riva al Mare",
-    description: "L'emozione indescrivibile di cavalcare lungo la battigia ascoltando il rumore delle onde, con le infinite spiagge di Marina di Grosseto a fare da sfondo.",
-    imageSrc: "/home/in riva al mare.jpg",
-    imageAlt: "Passeggiata a cavallo in riva al mare a Grosseto",
-    href: "/esperienze/in-riva-al-mare",
-    badge: "Più richiesta",
-    ctaLabel: "Scopri il percorso &rarr;",
-  },
 ];
 
 export default function HomePage() {

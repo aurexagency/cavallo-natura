@@ -10,14 +10,6 @@ export const metadata: Metadata = {
 // 2. Struttura Dati Tipizzata: Array di esperienze
 const experiencesData: ExperienceCardProps[] = [
   {
-    title: "In riva al mare",
-    description: "Una passeggiata emozionante lungo la battigia, ascoltando il rumore delle onde. Ideale per chi cerca un contatto profondo e suggestivo con la natura marina.",
-    imageSrc: "/esperienze a cavallo/in riva al mare 2.jpg",
-    imageAlt: "Cavaliere che passeggia a cavallo in riva al mare a Grosseto",
-    href: "/esperienze/in-riva-al-mare",
-    badge: "Più richiesta",
-  },
-  {
     title: "In pineta",
     description: "Immergiti nel silenzio e nei profumi della Pineta del Tombolo. Un percorso ombreggiato e rilassante, perfetto per ritrovare la pace interiore a contatto col bosco.",
     imageSrc: "/esperienze a cavallo/in pineta 2.jpg",
