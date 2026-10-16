@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
+import ServiceDetailsModal, { type ServiceDetails } from '@/components/ui/ServiceDetailsModal';
 
 // 1. SEO on-page: Metadata mirati a un pubblico high-ticket
 export const metadata: Metadata = {
@@ -17,6 +18,9 @@ interface EliteService {
   imageAlt: string;
   ctaText: string;
   href: string;
+  details?: ServiceDetails;
+  detailsHref?: string;
+  detailsText?: string;
 }
 
 const eliteServices: EliteService[] = [
@@ -27,7 +31,23 @@ const eliteServices: EliteService[] = [
     imageSrc: "/servizi d'elite/calici al tramonto.jpg",
     imageAlt: "Brindisi elegante al tramonto in spiaggia con cavalli sullo sfondo",
     ctaText: "Prenota",
-    href: "/contatti?servizio=calici-tramonto"
+    href: "/contatti?servizio=calici-tramonto",
+    details: {
+      percorso: "In riva al mare al tramonto",
+      durata: "2 ore e 45 minuti",
+      informazioni: [
+        "Escursione nella pineta e 2,5 km di spiaggia libera, da percorrere sulla battigia al tramonto",
+        "La passeggiata è adatta anche a chi è alla prima esperienza",
+        "La coppia è accompagnata da un istruttore-guida per tutta la durata",
+        "Bambini dai 14 anni compiuti.",
+        "Partecipanti ideali: coppie o piccoli gruppi di amici (minimo 2 persone)",
+      ],
+      abbigliamentoConsigliato: [
+        "Pantaloni lunghi, scarpe chiuse.",
+        "Peso massimo 90kg.",
+        "Il Centro mette a disposizione i cap obbligatori per tutti.",
+      ],
+    },
   },
   {
     id: "proposte-matrimonio",
@@ -36,7 +56,8 @@ const eliteServices: EliteService[] = [
     imageSrc: "/servizi d'elite/matrimonio.jpg",
     imageAlt: "Romantica e lussuosa proposta di matrimonio in spiaggia al tramonto",
     ctaText: "Prenota",
-    href: "/contatti?servizio=matrimonio"
+    href: "/contatti?servizio=matrimonio",
+    detailsHref: "/servizi-elite/proposte-matrimonio",
   },
   {
     id: "servizi-fotografici",
@@ -45,7 +66,9 @@ const eliteServices: EliteService[] = [
     imageSrc: "/servizi d'elite/servizio fotografico.jpg",
     imageAlt: "Shooting fotografico professionale con cavallo andaluso sulla spiaggia",
     ctaText: "Prenota",
-    href: "/contatti?servizio=shooting"
+    href: "/contatti?servizio=shooting",
+    detailsHref: "/gallery#servizio-fotografico",
+    detailsText: "Guarda la Gallery",
   }
 ];
 
@@ -108,9 +131,13 @@ export default function ServiziElitePage() {
                       <Button as="link" href={service.href} variant="primary" size="lg">
                         {service.ctaText}
                       </Button>
-                      <Button as="link" href="#" variant="outline" size="lg">
-                        Scopri i dettagli
+                      {service.details ? (
+                        <ServiceDetailsModal title={service.title} details={service.details} bookingHref={service.href} />
+                      ) : (
+                      <Button as="link" href={service.detailsHref ?? "#"} variant="outline" size="lg">
+                        {service.detailsText ?? "Scopri i dettagli"}
                       </Button>
+                      )}
                     </div>
                   </div>
 

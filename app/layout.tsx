@@ -52,6 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="it"
+      data-scroll-behavior="smooth"
       className={`${playfairDisplay.variable} ${inter.variable}`}
     >
       <body className="min-h-screen flex flex-col antialiased">

@@ -14,7 +14,6 @@ if (typeof window !== "undefined") {
 export default function HeroSequence() {
   const containerRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   
   // Stato per la gestione del caricamento (solo per la UI di caricamento, non per l'animazione)
@@ -22,10 +21,16 @@ export default function HeroSequence() {
   const [isLoaded, setIsLoaded] = useState(false);
   
   // 3. Ottimizzazione Render: Usiamo useRef per immagini e playhead per non innescare 
-  // 117 re-render al secondo in React, mantenendo il thread libero e ultra fluido.
+  // re-render continui in React, mantenendo il thread libero e ultra fluido.
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(0);
-  const frameCount = 117; // Da Frame_000 a Frame_116
+  const frameCount = 180; // Da hero - frame 2_000 a hero - frame 2_179
+  
+  // Funzione helper per ottenere il percorso del frame
+  const getFramePath = (index: number) => {
+    const indexStr = index.toString().padStart(3, "0");
+    return `/hero/hero%20-%20frame%202/hero%20-%20frame%202_${indexStr}.webp`;
+  };
   
   // Funzione core di calibrazione matematica per disegnare il frame
   const renderFrame = (index: number) => {
@@ -82,7 +87,6 @@ export default function HeroSequence() {
     const loadRestOfFrames = () => {
       for (let i = 1; i < frameCount; i++) {
         const img = tempImages[i];
-        const indexStr = i.toString().padStart(3, "0");
         
         img.onload = () => {
           loadedCount++;
@@ -93,7 +97,7 @@ export default function HeroSequence() {
         };
         
         // Assegnando la src, il browser accoda il download in background
-        img.src = `/hero/Sequence/Frame_${indexStr}.webp`;
+        img.src = getFramePath(i);
       }
     };
 
@@ -113,7 +117,7 @@ export default function HeroSequence() {
     };
     
     // Innesca il download del primo frame
-    firstImg.src = `/hero/Sequence/Frame_000.webp`;
+    firstImg.src = getFramePath(0);
 
   }, []);
 
@@ -151,8 +155,8 @@ export default function HeroSequence() {
           trigger: containerRef.current,
           // Pinna esattamente quando il contenitore tocca il bordo alto della viewport
           start: "top top", 
-          // 2. Timing e fluidità: end generosissimo (+4 volte l'altezza viewport)
-          // per diluire i 117 frame in un movimento pacato e controllato (no scatti)
+          // 2. Timing e fluidità: end generoso (+4 volte l'altezza viewport)
+          // per diluire i 180 frame in un movimento pacato e controllato (no scatti)
           end: "+=400%", 
           pin: true, 
           // scrub a 1 per ammorbidire perfettamente l'inerzia della rotellina del mouse (interpolazione)
@@ -168,18 +172,11 @@ export default function HeroSequence() {
         onUpdate: () => renderFrame(playhead.frame), // Update delegato a GSAP
       }, 0);
 
-      // Aggiungiamo l'animazione della CTA al Frame 055 (slide up + fade in)
+      // Aggiungiamo l'animazione della CTA (slide up + fade in)
       tl.fromTo(ctaRef.current,
         { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 15, ease: "power2.out" },
-        55
-      );
-
-      // Aggiungiamo l'animazione del Titolo al Frame 086 (fade in elegante)
-      tl.fromTo(titleRef.current,
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 20, ease: "power2.inOut" },
-        86
+        { autoAlpha: 1, y: 0, duration: 25, ease: "power2.out" },
+        85
       );
 
       return () => {
@@ -191,7 +188,7 @@ export default function HeroSequence() {
     mm.add("(prefers-reduced-motion: reduce)", () => {
       // Render statico dell'ultimo o primo frame per non omettere nulla visivamente, ma bloccando lo scroll finto
       renderFrame(0);
-      gsap.set([titleRef.current, ctaRef.current], { autoAlpha: 1, y: 0 });
+      gsap.set(ctaRef.current, { autoAlpha: 1, y: 0 });
     });
 
     return () => mm.revert();
@@ -200,11 +197,16 @@ export default function HeroSequence() {
   return (
     <section 
       ref={containerRef} 
-      aria-labelledby="hero-heading"
+      aria-labelledby="hero-title"
       // L'altezza 100vh nativa, supportata dal pinning, disaccoppia la sequenza
       // permettendo la rivelazione sottostante
       className="relative w-full h-screen bg-[var(--color-sand)] overflow-hidden"
     >
+      {/* Titolo semantico accessibile per SEO / screen reader */}
+      <h1 id="hero-title" className="sr-only">
+        Cavallo Natura | Centro Equestre in Maremma Toscana
+      </h1>
+
       {!isLoaded && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[var(--color-sand)] text-[var(--color-saddle)]">
           <span className="text-5xl animate-pulse mb-6">🐎</span>
@@ -225,35 +227,19 @@ export default function HeroSequence() {
       {/* Velo per Leggibilità (mix-blend-multiply per amalgama cinematografica) */}
       <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none mix-blend-multiply" />
 
-      {/* Contenuti di Riferimento (Testi e CTA separati per posizionamento e timeline indipendenti) */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        
-        {/* Titolo in alto per liberare la visuale centrale */}
-        <div className="absolute top-0 left-0 w-full pt-10 md:pt-16 flex justify-center px-4 text-center">
-          <h1
-            ref={titleRef}
-            id="hero-heading"
-            className="font-display text-5xl sm:text-7xl lg:text-8xl font-bold leading-tight text-white drop-shadow-[-6px_6px_10px_rgba(0,0,0,0.8)] opacity-0"
+      {/* Pulsante CTA posizionato strategicamente in basso */}
+      <div className="absolute bottom-0 left-0 w-full pb-24 md:pb-32 flex justify-center px-4 pointer-events-auto z-10">
+        <div ref={ctaRef} className="opacity-0">
+          <Button
+            as="link"
+            href="/esperienze"
+            variant="outline"
+            className="!border-white !text-white hover:!bg-white hover:!text-[var(--color-saddle)] tracking-wider drop-shadow-md"
+            size="lg"
           >
-            Benvenuti
-          </h1>
+            SCOPRI LE ESPERIENZE
+          </Button>
         </div>
-
-        {/* Pulsante CTA posizionato strategicamente in basso */}
-        <div className="absolute bottom-0 left-0 w-full pb-24 md:pb-32 flex justify-center px-4 pointer-events-auto">
-          <div ref={ctaRef} className="opacity-0">
-            <Button
-              as="link"
-              href="/esperienze"
-              variant="outline"
-              className="!border-white !text-white hover:!bg-white hover:!text-[var(--color-saddle)] tracking-wider drop-shadow-md"
-              size="lg"
-            >
-              SCOPRI LE ESPERIENZE
-            </Button>
-          </div>
-        </div>
-
       </div>
     </section>
   );
