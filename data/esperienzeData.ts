@@ -64,8 +64,8 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
     seoDescription:
       "Scopri l'escursione a cavallo nella Pineta del Tombolo a Marina di Grosseto. Un percorso ombreggiato, rilassante e sicuro, ideale anche per principianti.",
     heroImage: {
-      src: "/esperienze a cavallo/in pineta 2.jpg",
-      alt: "Escursione a cavallo nella fresca Pineta del Tombolo in Maremma",
+      src: "/pagine%20servizi/foto-in-pineta.webp",
+      alt: "Escursione guidata a cavallo nella pineta secolare di Marina di Grosseto",
     },
     overview: {
       lead: "Immergiti nel silenzio rigenerante e nei profumi balsamici della storica Pineta del Tombolo.",
@@ -112,7 +112,7 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
       { src: "/gallery/in pineta/DSC03362.jpg", alt: "Cavalli al passo tra i pini marittimi della Pineta del Tombolo" },
       { src: "/gallery/in pineta/DSC04167.jpg", alt: "Luce filtrata tra i pini marittimi durante la passeggiata a cavallo" },
       { src: "/gallery/in pineta/DSC04382.jpg", alt: "Gruppo di cavalieri immersi nella macchia mediterranea maremmana" },
-      { src: "/gallery/in pineta/DSC04620.jpg", alt: "Dettaglio di un cavallo tranquillo all'ombra della pineta" },
+      { src: "/gallery/in pineta/DSC03946.jpg", alt: "Dettaglio di un cavallo tranquillo all'ombra della pineta" },
     ],
     whatsappMessage:
       "Ciao Cavallo Natura! Vorrei prenotare la Passeggiata in Pineta. Potete indicarmi le disponibilità?",
@@ -127,8 +127,8 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
     seoDescription:
       "Vivi l'emozione unica di cavalcare dalla fresca Pineta del Tombolo fino alla spiaggia dorata di Marina di Grosseto, a pochi passi dalle onde del mare.",
     heroImage: {
-      src: "/esperienze a cavallo/pineta e spiaggia.png",
-      alt: "Cavalieri che passano dalla pineta alla spiaggia dorata della Maremma",
+      src: "/pagine%20servizi/foto-in-pineta-e-spiaggia.webp",
+      alt: "Passeggiata a cavallo dalla pineta alla spiaggia incontaminata della Maremma",
     },
     overview: {
       lead: "Il meglio della Maremma Toscana racchiuso in un'unica, indimenticabile escursione tra terra e mare.",

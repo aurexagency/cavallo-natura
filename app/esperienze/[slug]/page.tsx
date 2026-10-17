@@ -102,10 +102,10 @@ function WhatsAppIcon({ className }: IconProps) {
 function SectionHeader({ eyebrow, title, id }: { eyebrow: string; title: string; id: string }) {
   return (
     <header className="max-w-3xl mx-auto text-center mb-16 md:mb-24 flex flex-col gap-4">
-      <span className="font-sans text-sm md:text-base uppercase tracking-[0.2em] font-medium text-[var(--color-wine)]">
+      <span className="font-sans text-xs md:text-sm uppercase tracking-[0.2em] font-medium text-[var(--color-wine)]">
         {eyebrow}
       </span>
-      <h2 id={id} className="font-display text-4xl md:text-6xl leading-tight text-[var(--color-wine)]">
+      <h2 id={id} className="font-display text-4xl md:text-5xl leading-tight text-[var(--color-wine)]">
         {title}
       </h2>
     </header>
@@ -195,9 +195,9 @@ export default async function ExperienceDetailPage({ params }: PageProps) {
               src={experience.heroImage.src}
               alt={experience.heroImage.alt}
               fill
-              priority
+              priority={true}
               className="object-cover"
-              sizes="(max-width: 1200px) 100vw, 1200px"
+              sizes="(max-width: 1024px) 100vw, 1200px"
             />
           </div>
         </div>
@@ -311,18 +311,18 @@ export default async function ExperienceDetailPage({ params }: PageProps) {
       <section aria-labelledby="gallery-title" className="bg-[var(--color-cn-cream)] py-24 md:py-36 px-4 md:px-8">
         <SectionHeader id="gallery-title" eyebrow="Scatti dal Percorso" title="Frammenti d'Emozione" />
 
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto" role="list">
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto" role="list">
           {experience.gallery.map((image) => (
             <li
               key={image.src}
-              className="relative aspect-[4/3] rounded-[var(--radius-card)] overflow-hidden shadow-lg group"
+              className="relative w-full aspect-[3/4] rounded-[var(--radius-card)] overflow-hidden shadow-md group"
             >
               <Image
                 src={image.src}
                 alt={image.alt}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover object-center transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 500px"
               />
             </li>
           ))}

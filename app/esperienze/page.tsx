@@ -10,11 +10,12 @@ export const metadata: Metadata = {
 // 2. Struttura Dati Tipizzata: Array di esperienze
 const experiencesData: ExperienceCardProps[] = [
   {
-    title: "In pineta",
-    description: "Immergiti nel silenzio e nei profumi della Pineta del Tombolo. Un percorso ombreggiato e rilassante, perfetto per ritrovare la pace interiore a contatto col bosco.",
-    imageSrc: "/esperienze a cavallo/in pineta 2.jpg",
-    imageAlt: "Escursione a cavallo nella fresca pineta della Maremma toscana",
+    title: "Passeggiata Privata – 2 Ore",
+    description: "Un’esperienza rilassante tra la Pineta del Tombolo e un tratto di spiaggia libera (1 km). Con istruttore dedicato, adatta anche a principianti.",
+    imageSrc: "/pagine%20servizi/foto-in-pineta.webp",
+    imageAlt: "Passeggiata privata a cavallo nella Pineta del Tombolo e spiaggia libera - Cavallo Natura",
     href: "/esperienze/in-pineta",
+    badge: "2 Ore",
   },
   {
     title: "In pineta e spiaggia",
@@ -34,8 +35,8 @@ const experiencesData: ExperienceCardProps[] = [
   {
     title: "I servizi D'elite",
     description: "",
-    imageSrc: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
-    imageAlt: "I servizi D'elite",
+    imageSrc: "/pagine%20servizi/servizio-elite-riquadro-.webp",
+    imageAlt: "Servizi d'élite ed esperienze esclusive a cavallo - Cavallo Natura",
     href: "/servizi-elite",
   }
 ];
