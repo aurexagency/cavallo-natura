@@ -57,40 +57,42 @@ export interface ExperienceDetail {
 export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
   "in-pineta": {
     slug: "in-pineta",
-    title: "Passeggiata in Pineta",
-    subtitle: "Il respiro lento del bosco maremmano",
-    badge: "Adatto a Tutti",
-    seoTitle: "Passeggiata a Cavallo in Pineta a Marina di Grosseto | Cavallo Natura",
+    title: "Passeggiata Privata a Cavallo – 2 Ore",
+    subtitle: "Un’esperienza rilassante, adatta anche a principianti",
+    badge: "2 Ore Privata",
+    seoTitle: "Passeggiata Privata a Cavallo – 2 Ore a Marina di Grosseto | Cavallo Natura",
     seoDescription:
-      "Scopri l'escursione a cavallo nella Pineta del Tombolo a Marina di Grosseto. Un percorso ombreggiato, rilassante e sicuro, ideale anche per principianti.",
+      "Vivi la magia di una passeggiata privata a cavallo di 2 ore tra la Pineta del Tombolo e 1 km di spiaggia libera a Marina di Grosseto. Istruttore dedicato, adatta anche a principianti.",
     heroImage: {
       src: "/pagine%20servizi/foto-in-pineta.webp",
       alt: "Escursione guidata a cavallo nella pineta secolare di Marina di Grosseto",
     },
     overview: {
-      lead: "Immergiti nel silenzio rigenerante e nei profumi balsamici della storica Pineta del Tombolo.",
+      lead: "Vivi la magia di una cavalcata immersa nella natura, tra la Pineta del Tombolo e un tratto di spiaggia. Accompagnato da una guida esperta, potrai goderti un’esperienza rigenerante in un’atmosfera tranquilla e autentica.",
       paragraphs: [
-        "Questa esperienza è pensata per chi desidera staccare dalla frenesia quotidiana e ritrovare un ritmo autentico, camminando al passo cadenzato del cavallo lungo sentieri sabbiosi immersi nel verde.",
-        "Sotto le chiome dei pini marittimi secolari, la luce filtra creando un'atmosfera intima e rilassante. Grazie alla tranquillità dei nostri cavalli e alla presenza costante delle guide, il percorso è perfetto sia per chi sale in sella per la prima volta, sia per chi cerca una passeggiata contemplativa nella natura.",
+        "I sentieri ombreggiati dai pini marittimi secolari offrono un riparo naturale e una sensazione di pace immediata. Il ritmo disteso della passeggiata, cadenzato dal passo sicuro dei nostri cavalli, permette di assaporare ogni profumo della macchia mediterranea fino ad aprirsi verso il litorale tirrenico.",
+        "La presenza costante di una guida dedicata rende questa uscita perfetta sia per chi si avvicina all'equitazione per la prima volta, sia per chi desidera una parentesi di relax esclusivo in Maremma.",
       ],
     },
     specs: {
       percorso: {
         title: "Percorso",
-        value: "Pineta del Tombolo",
+        value: "Pineta e breve tratto di spiaggia (1 km di spiaggia libera)",
       },
       durata: {
         title: "Durata",
-        value: "1 ora",
+        value: "2 ore",
       },
       informazioniUtili: {
         title: "Informazioni",
         items: [
-          "Passeggiata rigorosamente a passo nella Pineta del Tombolo.",
-          "La passeggiata è adatta a persone non esperte.",
-          "Bambini dai 14 anni compiuti.",
-          "Sarete accompagnati da un istruttore-guida.",
-          "Minimo 2 persone",
+          "Durata: 2 ore.",
+          "Percorso: pineta e breve tratto di spiaggia (1 km di spiaggia libera).",
+          "Guida: istruttore dedicato per l’intera durata.",
+          "Livello richiesto: adatto anche a chi è alla prima esperienza.",
+          "Età minima: 14 anni – Peso massimo: 90 kg.",
+          "Partecipanti ideali: coppie o piccoli gruppi di amici.",
+          "Tariffe: €75 a persona (minimo 2 partecipanti) | €100 per partecipazione singola.",
         ],
       },
       abbigliamentoConsigliato: {
