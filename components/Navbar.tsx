@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useGSAP } from "@gsap/react";
@@ -51,22 +52,20 @@ function HorseLogo({ onClick }: { onClick?: () => void }) {
   return (
     <Link
       href="/"
-      className="flex items-center gap-3 group"
+      className="flex items-center group py-1"
       aria-label="Cavallo Natura – Homepage"
       onClick={onClick}
     >
-      {/* Badge CN — sfondo scuro traslucido con bordo bianco sottile */}
-      <div
-        className="w-9 h-9 rounded-full border border-white/30 bg-white/10 flex items-center justify-center shrink-0"
-        aria-hidden="true"
-      >
-        <span className="text-white font-display font-semibold text-xs">CN</span>
+      <div className="relative h-10 sm:h-12 w-auto aspect-[366/157] shrink-0">
+        <Image
+          src="/Menù-logo/_logo_bianco.png"
+          alt="Cavallo Natura"
+          fill
+          priority
+          sizes="(max-width: 640px) 100px, 120px"
+          className="object-contain object-left transition-opacity duration-200 group-hover:opacity-90"
+        />
       </div>
-
-      {/* Brand name — bianco candido */}
-      <span className="text-lg md:text-xl font-display font-semibold tracking-wide text-white">
-        Cavallo Natura
-      </span>
     </Link>
   );
 }

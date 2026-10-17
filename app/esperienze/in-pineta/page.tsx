@@ -7,12 +7,12 @@ import { siteConfig } from "@/config/site";
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: "Passeggiata Privata a Cavallo – 2 Ore | Cavallo Natura Maremma",
+  title: "Pineta | Cavallo Natura Maremma",
   description:
     "Vivi la magia di una cavalcata privata di 2 ore tra la Pineta del Tombolo e 1 km di spiaggia libera a Marina di Grosseto. Istruttore dedicato, adatta anche a principianti.",
   alternates: { canonical: "/esperienze/in-pineta" },
   openGraph: {
-    title: "Passeggiata Privata a Cavallo – 2 Ore | Cavallo Natura",
+    title: "Pineta | Cavallo Natura",
     description:
       "Vivi la magia di una cavalcata immersa nella natura, tra la Pineta del Tombolo e un tratto di spiaggia libera. Un’esperienza rilassante adatta anche a principianti.",
     url: "/esperienze/in-pineta",
@@ -105,7 +105,7 @@ function SectionHeader({ eyebrow, title, id }: { eyebrow: string; title: string;
 
 export default function PasseggiataInPinetaPage() {
   const whatsappHref = `https://wa.me/${siteConfig.contact.whatsappNumber}?text=${encodeURIComponent(
-    "Ciao Cavallo Natura! Vorrei prenotare la Passeggiata Privata a Cavallo – 2 Ore. Potete indicarmi le disponibilità?"
+    "Ciao Cavallo Natura! Vorrei prenotare l'esperienza Pineta. Potete indicarmi le disponibilità?"
   )}`;
 
   const galleryImages = [
@@ -162,7 +162,7 @@ export default function PasseggiataInPinetaPage() {
               id="experience-title"
               className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-[var(--color-wine)] leading-tight"
             >
-              Passeggiata Privata a Cavallo – 2 Ore
+              Pineta
             </h1>
           </header>
 
@@ -485,7 +485,7 @@ export default function PasseggiataInPinetaPage() {
             Pronto a Vivere la Maremma a Cavallo?
           </h2>
           <p className="text-lg md:text-xl leading-relaxed text-[var(--color-cn-sand-lt)]">
-            Verifica subito la disponibilità della Passeggiata Privata a Cavallo di 2 ore: scrivici su WhatsApp per
+            Verifica subito la disponibilità dell&apos;esperienza Pineta (2 ore): scrivici su WhatsApp per
             fissare il giorno e l&apos;orario migliore per te.
           </p>
 
@@ -494,7 +494,7 @@ export default function PasseggiataInPinetaPage() {
               href={whatsappHref}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Prenota la Passeggiata Privata a Cavallo su WhatsApp"
+              aria-label="Prenota l'esperienza Pineta su WhatsApp"
               className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-[var(--radius-btn)] bg-[var(--color-cn-gold)] text-[var(--color-cn-charcoal)] font-semibold tracking-wide uppercase text-base shadow-lg transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <WhatsAppIcon className="w-5 h-5" />

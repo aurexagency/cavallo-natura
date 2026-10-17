@@ -57,10 +57,10 @@ export interface ExperienceDetail {
 export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
   "in-pineta": {
     slug: "in-pineta",
-    title: "Passeggiata Privata a Cavallo – 2 Ore",
+    title: "Pineta",
     subtitle: "Un’esperienza rilassante, adatta anche a principianti",
     badge: "2 Ore Privata",
-    seoTitle: "Passeggiata Privata a Cavallo – 2 Ore a Marina di Grosseto | Cavallo Natura",
+    seoTitle: "Pineta – Passeggiata a Cavallo a Marina di Grosseto | Cavallo Natura",
     seoDescription:
       "Vivi la magia di una passeggiata privata a cavallo di 2 ore tra la Pineta del Tombolo e 1 km di spiaggia libera a Marina di Grosseto. Istruttore dedicato, adatta anche a principianti.",
     heroImage: {
@@ -122,40 +122,44 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
 
   "in-pineta-e-spiaggia": {
     slug: "in-pineta-e-spiaggia",
-    title: "In Pineta e Spiaggia",
-    subtitle: "L'incontro magico tra il bosco e il mare",
-    badge: "Più Richiesto",
-    seoTitle: "Passeggiata a Cavallo in Pineta e Spiaggia in Maremma | Cavallo Natura",
+    title: "Pineta e Spiaggia",
+    subtitle: "Un’esperienza unica, adatta anche a principianti",
+    badge: "2h 45m – Spiaggia",
+    seoTitle: "Pineta e Spiaggia | Cavallo Natura",
     seoDescription:
-      "Vivi l'emozione unica di cavalcare dalla fresca Pineta del Tombolo fino alla spiaggia dorata di Marina di Grosseto, a pochi passi dalle onde del mare.",
+      "Vivi la magia di una rilassante passeggiata a cavallo di 2 ore e 45 minuti tra la Pineta del Tombolo e 2,5 km di spiaggia libera sulla battigia a Marina di Grosseto. Istruttore dedicato, adatta anche a principianti.",
     heroImage: {
       src: "/pagine%20servizi/foto-in-pineta-e-spiaggia.webp",
-      alt: "Passeggiata a cavallo dalla pineta alla spiaggia incontaminata della Maremma",
+      alt: "Passeggiata privata a cavallo tra la Pineta del Tombolo e la battigia in riva al mare",
     },
     overview: {
-      lead: "Il meglio della Maremma Toscana racchiuso in un'unica, indimenticabile escursione tra terra e mare.",
+      lead: "Vivi la magia di una rilassante passeggiata a cavallo, tra la Pineta del Tombolo e la spiaggia. Accompagnato da una guida esperta, potrai goderti un percorso immerso nella natura, in un’atmosfera tranquilla e rigenerante.",
       paragraphs: [
-        "Il viaggio inizia nella quiete ovattata della Pineta del Tombolo, dove il profumo di resina e mirto accompagna i primi minuti in sella. Passo dopo passo, il bosco si dirada lasciando spazio alle dune costiere e al suono sempre più vicino delle onde.",
-        "Emergere dai sentieri alberati sull'ampia spiaggia dorata della costa tirrenica regala un'emozione impareggiabile: cavalcare lungo la battigia, con la brezza marina sul viso e l'orizzonte aperto, trasforma questa passeggiata in un ricordo indelebile.",
+        "L'itinerario si sviluppa lungo i sentieri protetti e ombreggiati della secolare Pineta del Tombolo, dove il profumo inconfondibile di pini marittimi e macchia mediterranea scandisce i primi passi in sella. Dalla quiete ovattata del bosco si passa gradualmente alla zona retrodunale, fino a schiudersi davanti allo spettacolo aperto del Mar Tirreno.",
+        "Una volta raggiunta la costa, vivrai l'emozione straordinaria di percorrere ben 2,5 km di spiaggia libera direttamente sulla battigia. Il suono ritmico della risacca e la brezza marina accompagneranno ogni momento, con la costante presenza di un istruttore dedicato che assicurerà serenità, supporto e cura a ciascun cavaliere.",
       ],
     },
     specs: {
       percorso: {
         title: "Percorso",
-        value: "Pineta del Tombolo e spiaggia",
+        value: "Pineta e 2,5 km di spiaggia libera (sulla battigia)",
       },
       durata: {
         title: "Durata",
-        value: "2 ore",
+        value: "2 ore e 45 minuti",
+        description: "Periodo: dal 20 settembre al 20 maggio",
       },
       informazioniUtili: {
         title: "Informazioni",
         items: [
-          "Escursione nella Pineta del Tombolo, Canale San Leopoldo, zona retrodunale, dune e spiaggia.",
-          "La passeggiata è adatta a persone non esperte",
-          "La coppia è accompagnata da un istruttore-guida",
-          "Bambini dai 14 anni compiuti.",
-          "Minimo 1 massimo 8 persone",
+          "Durata: 2 ore e 45 minuti.",
+          "Periodo: dal 20 settembre al 20 maggio.",
+          "Percorso: pineta e 2,5 km di spiaggia libera, da percorrere sulla battigia.",
+          "Guida: istruttore dedicato per l’intera durata.",
+          "Livello richiesto: adatto anche a chi è alla prima esperienza.",
+          "Età minima: 14 anni – Peso massimo: 90 kg.",
+          "Partecipanti ideali: coppie o piccoli gruppi di amici.",
+          "Tariffa: €100 a persona (minimo 2 partecipanti).",
         ],
       },
       abbigliamentoConsigliato: {
@@ -169,9 +173,9 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
     },
     video: {
       src: "/videos/esperienze/in-pineta-e-spiaggia.mp4",
-      poster: "/esperienze a cavallo/pineta e spiaggia.png",
+      poster: "/pagine%20servizi/foto-in-pineta-e-spiaggia.webp",
       caption:
-        "Dal verde intenso della pineta all'azzurro del Mar Tirreno: scopri l'emozione della nostra escursione più iconica.",
+        "L'emozione autentica di cavalcare lungo la battigia, accompagnati dal respiro del mare e dalla brezza marina.",
     },
     gallery: [
       { src: "/gallery/in riva al mare/DSC04792.jpg", alt: "Passeggiata a cavallo in riva al mare con la brezza marina" },
@@ -180,7 +184,7 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
       { src: "/gallery/in riva al mare/DSC06470.jpg", alt: "Colori caldi del tramonto sulla spiaggia di Marina di Grosseto" },
     ],
     whatsappMessage:
-      "Ciao Cavallo Natura! Vorrei prenotare l'escursione In Pineta e Spiaggia. Potete indicarmi le disponibilità?",
+      "Ciao Cavallo Natura! Vorrei prenotare l'esperienza Pineta e Spiaggia. Potete indicarmi le disponibilità?",
   },
 
   "per-esperti": {

@@ -10,19 +10,20 @@ export const metadata: Metadata = {
 // 2. Struttura Dati Tipizzata: Array di esperienze
 const experiencesData: ExperienceCardProps[] = [
   {
-    title: "Passeggiata Privata – 2 Ore",
+    title: "Pineta",
     description: "Un’esperienza rilassante tra la Pineta del Tombolo e un tratto di spiaggia libera (1 km). Con istruttore dedicato, adatta anche a principianti.",
     imageSrc: "/pagine%20servizi/foto-in-pineta.webp",
-    imageAlt: "Passeggiata privata a cavallo nella Pineta del Tombolo e spiaggia libera - Cavallo Natura",
+    imageAlt: "Passeggiata a cavallo nella Pineta del Tombolo e spiaggia libera - Cavallo Natura",
     href: "/esperienze/in-pineta",
     badge: "2 Ore",
   },
   {
-    title: "In pineta e spiaggia",
-    description: "Il meglio della Maremma in un'unica escursione: attraversa i sentieri della fitta pineta per poi emergere sulla vasta spiaggia dorata della costa tirrenica.",
-    imageSrc: "/esperienze a cavallo/pineta e spiaggia.png",
-    imageAlt: "Transizione spettacolare dalla pineta alla spiaggia a cavallo",
+    title: "Pineta e Spiaggia",
+    description: "Vivi la magia di una rilassante passeggiata tra la Pineta del Tombolo e 2,5 km di spiaggia libera sulla battigia (2h 45m). Con istruttore dedicato, adatta anche a principianti.",
+    imageSrc: "/pagine%20servizi/foto-in-pineta-e-spiaggia.webp",
+    imageAlt: "Pineta e Spiaggia a cavallo tra pineta e battigia in riva al mare - Cavallo Natura",
     href: "/esperienze/in-pineta-e-spiaggia",
+    badge: "2h 45m",
   },
   {
     title: "Per esperti",
