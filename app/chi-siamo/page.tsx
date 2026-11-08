@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
 import Button from '@/components/ui/Button';
 
 // 1. Architettura Semantica e SEO: Esportazione Metadata nativo
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 export default function ChiSiamoPage() {
   return (
     // 2. Token Colore e Spaziatura: Sfondo var(--color-sand), ampio respiro
-    <main className="min-h-screen bg-[var(--color-sand)] pt-32 pb-32 overflow-x-hidden flex flex-col gap-24 md:gap-40">
+    <div className="min-h-screen bg-[var(--color-sand)] pt-32 pb-32 overflow-x-hidden flex flex-col gap-24 md:gap-40">
       
       {/* SEZIONE 1: Una famiglia, una passione */}
       <section className="container mx-auto px-4 md:px-8">
@@ -48,20 +47,8 @@ export default function ChiSiamoPage() {
         <div className="container mx-auto px-4 md:px-8 text-center">
           <article className="max-w-5xl mx-auto flex flex-col items-center gap-8 md:gap-12">
             
-            {/* Decorazione con linee e icona come da layout */}
-            <div className="flex items-center justify-center gap-6 mb-2 w-full max-w-md">
-              <div className="h-px bg-[var(--color-wine)] flex-1 opacity-40"></div>
-              <div className="relative w-16 h-16 md:w-20 md:h-20 text-[var(--color-wine)]">
-                {/* Fallback per l'icona della testa di cavallo (Componente Image nativo) */}
-                <Image
-                  src="/images/logo-icon-wine.svg" 
-                  alt="Icona Cavallo Natura"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="h-px bg-[var(--color-wine)] flex-1 opacity-40"></div>
-            </div>
+            {/* Divisore decorativo (l'icona andrà reinserita quando sarà disponibile il file) */}
+            <div className="w-16 h-px bg-[var(--color-wine)] opacity-50 mb-2" aria-hidden="true" />
             
             <header className="flex flex-col items-center gap-3 w-full">
               <span className="block font-sans text-lg md:text-xl text-[var(--color-wine)] font-medium tracking-wide">
@@ -116,7 +103,7 @@ export default function ChiSiamoPage() {
         </article>
       </section>
 
-      {/* SEZIONE 4: Un rifugio di bellezza autentica (con immagine panoramica) */}
+      {/* SEZIONE 4: Un rifugio di bellezza autentica */}
       <section className="bg-[var(--color-cn-cream)] py-24 md:py-32 lg:py-40">
         <div className="container mx-auto px-4 md:px-8">
           <article className="max-w-5xl mx-auto flex flex-col gap-16 md:gap-24">
@@ -139,21 +126,10 @@ export default function ChiSiamoPage() {
                 </p>
               </div>
             </div>
-            
-            {/* Performance Media: Immagine di copertina panoramica (Zero CLS) */}
-            <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[var(--radius-card)] overflow-hidden shadow-2xl">
-              <Image
-                src="/images/chi-siamo-spiaggia.jpg"
-                alt="Gruppo di cavalieri che passeggiano a cavallo sulla spiaggia in Maremma"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 1024px"
-              />
-            </div>
           </article>
         </div>
       </section>
 
-    </main>
+    </div>
   );
 }

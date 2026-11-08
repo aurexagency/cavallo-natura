@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -10,6 +10,12 @@ import Button from "@/components/ui/Button";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
+
+// Numero di frame in /public/hero/frames (frame-000.webp … frame-151.webp)
+const frameCount = 152;
+
+// Percorso del frame i-esimo
+const getFramePath = (index: number) => `/hero/frames/frame-${index.toString().padStart(3, "0")}.webp`;
 
 export default function HeroSequence() {
   const containerRef = useRef<HTMLElement>(null);
@@ -24,16 +30,9 @@ export default function HeroSequence() {
   // re-render continui in React, mantenendo il thread libero e ultra fluido.
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(0);
-  const frameCount = 152; // Da hero - frame 2_000 a hero - frame 2_151
-  
-  // Funzione helper per ottenere il percorso del frame
-  const getFramePath = (index: number) => {
-    const indexStr = index.toString().padStart(3, "0");
-    return `/hero/hero%20-%20frame%202/hero%20-%20frame%202_${indexStr}.webp`;
-  };
-  
   // Funzione core di calibrazione matematica per disegnare il frame
-  const renderFrame = (index: number) => {
+  // Usa solo ref: identità stabile, nessuna dipendenza
+  const renderFrame = useCallback((index: number) => {
     if (!canvasRef.current) return;
     
     // Trova il frame caricato più vicino (se l'utente scrolla veloce e il frame esatto non è ancora pronto)
@@ -70,7 +69,7 @@ export default function HeroSequence() {
     ctx.drawImage(img, x, y, w, h);
     
     currentFrameRef.current = index;
-  };
+  }, []);
 
   // Preloading asincrono OTTIMIZZATO per Vercel/Produzione
   useEffect(() => {
@@ -119,16 +118,16 @@ export default function HeroSequence() {
     // Innesca il download del primo frame
     firstImg.src = getFramePath(0);
 
-  }, []);
+  }, [renderFrame]);
 
   // Handler del resize perricalibrare le coordinate di GSAP
-  const resizeCanvas = () => {
+  const resizeCanvas = useCallback(() => {
     if (!canvasRef.current) return;
     canvasRef.current.width = window.innerWidth;
     canvasRef.current.height = window.innerHeight;
     renderFrame(currentFrameRef.current);
     ScrollTrigger.refresh();
-  };
+  }, [renderFrame]);
 
   useEffect(() => {
     if (isLoaded) {
@@ -136,7 +135,7 @@ export default function HeroSequence() {
       window.addEventListener("resize", resizeCanvas);
     }
     return () => window.removeEventListener("resize", resizeCanvas);
-  }, [isLoaded]);
+  }, [isLoaded, resizeCanvas]);
 
   // 1. Calibrazione dello ScrollTrigger perfetto
   useGSAP(() => {

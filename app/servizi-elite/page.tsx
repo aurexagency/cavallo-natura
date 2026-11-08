@@ -28,7 +28,7 @@ const eliteServices: EliteService[] = [
     id: "calici-al-tramonto",
     title: "Calici al Tramonto",
     description: "Concediti il lusso di un brindisi esclusivo in riva al mare mentre il sole scompare all'orizzonte. Un'esperienza sensoriale unica dove il profumo della salsedine, la maestosità dei nostri cavalli e il fresco drink che hai scelto si fondono in un momento di pura magia.",
-    imageSrc: "/servizi d'elite/calici al tramonto.jpg",
+    imageSrc: "/servizi-elite/calici-al-tramonto.jpg",
     imageAlt: "Brindisi elegante al tramonto in spiaggia con cavalli sullo sfondo",
     ctaText: "Prenota",
     href: "/contatti?servizio=calici-tramonto",
@@ -53,7 +53,7 @@ const eliteServices: EliteService[] = [
     id: "proposte-matrimonio",
     title: "Proposte di Matrimonio",
     description: "Sorprendi chi ami con una dichiarazione indimenticabile. Curiamo ogni minimo dettaglio, dagli allestimenti romantici e riservati sulla sabbia, fino ai percorsi personalizzati al passo, per fare da cornice perfetta al vostro 'Sì' immersi nell'incanto della Maremma.",
-    imageSrc: "/servizi d'elite/matrimonio.jpg",
+    imageSrc: "/servizi-elite/matrimonio.jpg",
     imageAlt: "Romantica e lussuosa proposta di matrimonio in spiaggia al tramonto",
     ctaText: "Prenota",
     href: "/contatti?servizio=matrimonio",
@@ -63,7 +63,7 @@ const eliteServices: EliteService[] = [
     id: "servizi-fotografici",
     title: "Servizi Fotografici",
     description: "Cattura l'essenza dell'eleganza attraverso l'obiettivo. Mettiamo a disposizione i nostri magnifici esemplari per shooting professionali, fashion editorial e ritratti d'autore, sfruttando la luce impareggiabile e gli scenari mozzafiato della costa tirrenica.",
-    imageSrc: "/servizi d'elite/servizio fotografico.jpg",
+    imageSrc: "/servizi-elite/servizio-fotografico.jpg",
     imageAlt: "Shooting fotografico professionale con cavallo andaluso sulla spiaggia",
     ctaText: "Prenota",
     href: "/contatti?servizio=shooting",
@@ -75,7 +75,7 @@ const eliteServices: EliteService[] = [
 export default function ServiziElitePage() {
   return (
     // Architettura Semantica HTML5 e Sfondo principale
-    <main className="min-h-screen bg-[var(--color-sand)] pt-32 overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--color-sand)] pt-32 overflow-x-hidden">
       
       {/* Intestazione della Pagina Elite */}
       <header className="container mx-auto px-4 md:px-8 py-20 md:py-32 text-center max-w-5xl">
@@ -166,6 +166,6 @@ export default function ServiziElitePage() {
         })}
       </div>
       
-    </main>
+    </div>
   );
 }

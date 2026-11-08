@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useId, useRef } from "react";
 import Button from "@/components/ui/Button";
+import { CheckList } from "@/components/ui/SpecCard";
+import { CloseIcon } from "@/components/icons";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -22,24 +24,6 @@ interface ServiceDetailsModalProps {
   bookingHref?: string;
 }
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
-
-function CloseIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
-      <path d="M6 6l12 12M18 6L6 18" />
-    </svg>
-  );
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}>
-      <path d="M5 12.5l4.5 4.5L19 7.5" />
-    </svg>
-  );
-}
-
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function DetailBlock({ label, children }: { label: string; children: React.ReactNode }) {
@@ -50,19 +34,6 @@ function DetailBlock({ label, children }: { label: string; children: React.React
       </h3>
       {children}
     </section>
-  );
-}
-
-function CheckList({ items }: { items: string[] }) {
-  return (
-    <ul className="flex flex-col gap-3" role="list">
-      {items.map((item) => (
-        <li key={item} className="flex items-start gap-3 text-base md:text-lg text-[var(--color-saddle)] font-medium leading-relaxed">
-          <CheckIcon className="w-5 h-5 mt-1 shrink-0 text-[var(--color-pine)]" />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
   );
 }
 
@@ -165,11 +136,11 @@ export default function ServiceDetailsModal({
             <div className="w-full h-px bg-[var(--color-saddle)]/15" aria-hidden="true" />
 
             <DetailBlock label="Informazioni">
-              <CheckList items={details.informazioni} />
+              <CheckList size="md" items={details.informazioni} />
             </DetailBlock>
 
             <DetailBlock label="Abbigliamento consigliato">
-              <CheckList items={details.abbigliamentoConsigliato} />
+              <CheckList size="md" items={details.abbigliamentoConsigliato} />
             </DetailBlock>
           </div>
 

@@ -46,7 +46,7 @@ const pensionServices: PensionService[] = [
 export default function PensioneCavalliPage() {
   return (
     // Architettura Semantica e Sfondo Brand
-    <main className="min-h-screen bg-[var(--color-sand)] pt-32 overflow-x-hidden flex flex-col">
+    <div className="min-h-screen bg-[var(--color-sand)] pt-32 overflow-x-hidden flex flex-col">
       
       {/* HERO SECTION: Intro rassicurante e accogliente */}
       <section className="container mx-auto px-4 md:px-8 py-20 md:py-32 max-w-5xl text-center">
@@ -65,7 +65,7 @@ export default function PensioneCavalliPage() {
       <section className="container mx-auto px-4 md:px-8 pb-24 md:pb-32">
         <div className="relative w-full aspect-video md:aspect-[21/9] rounded-[var(--radius-card)] overflow-hidden shadow-2xl">
           <Image
-            src="/pensione per cavalli/pensione per cavalli.jpg" // Immagine reale inserita
+            src="/pensione-per-cavalli/pensione-per-cavalli.jpg" // Immagine reale inserita
             alt="Splendido cavallo sereno che pascola in un ampio paddock verde in Maremma"
             fill
             className="object-cover"
@@ -158,6 +158,6 @@ export default function PensioneCavalliPage() {
         </div>
       </section>
       
-    </main>
+    </div>
   );
 }

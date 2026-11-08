@@ -12,7 +12,7 @@ const experiencesData: ExperienceCardProps[] = [
   {
     title: "Pineta",
     description: "Un’esperienza rilassante tra la Pineta del Tombolo e un tratto di spiaggia libera (1 km). Con istruttore dedicato, adatta anche a principianti.",
-    imageSrc: "/pagine%20servizi/foto-in-pineta.webp",
+    imageSrc: "/pagine-servizi/foto-in-pineta.webp",
     imageAlt: "Passeggiata a cavallo nella Pineta del Tombolo e spiaggia libera - Cavallo Natura",
     href: "/esperienze/in-pineta",
     badge: "2 Ore",
@@ -20,7 +20,7 @@ const experiencesData: ExperienceCardProps[] = [
   {
     title: "Pineta e Spiaggia",
     description: "Vivi la magia di una rilassante passeggiata tra la Pineta del Tombolo e 2,5 km di spiaggia libera sulla battigia (2h 45m). Con istruttore dedicato, adatta anche a principianti.",
-    imageSrc: "/pagine%20servizi/foto-in-pineta-e-spiaggia.webp",
+    imageSrc: "/pagine-servizi/foto-in-pineta-e-spiaggia.webp",
     imageAlt: "Pineta e Spiaggia a cavallo tra pineta e battigia in riva al mare - Cavallo Natura",
     href: "/esperienze/in-pineta-e-spiaggia",
     badge: "2h 45m",
@@ -28,7 +28,7 @@ const experiencesData: ExperienceCardProps[] = [
   {
     title: "Per esperti",
     description: "Un'avventura dinamica pensata per cavalieri provetti. Galoppa in sicurezza sulla spiaggia e metti alla prova le tue abilità in totale sintonia con il cavallo.",
-    imageSrc: "/esperienze a cavallo/Per esperti.jpeg",
+    imageSrc: "/esperienze-a-cavallo/per-esperti.jpeg",
     imageAlt: "Cavaliere esperto al galoppo veloce sulla spiaggia maremmana",
     href: "/esperienze/per-esperti",
     badge: "Avanzato",
@@ -36,7 +36,7 @@ const experiencesData: ExperienceCardProps[] = [
   {
     title: "I servizi D'elite",
     description: "",
-    imageSrc: "/pagine%20servizi/servizio-elite-riquadro-.webp",
+    imageSrc: "/pagine-servizi/servizio-elite-riquadro.webp",
     imageAlt: "Servizi d'élite ed esperienze esclusive a cavallo - Cavallo Natura",
     href: "/servizi-elite",
   }
@@ -44,8 +44,8 @@ const experiencesData: ExperienceCardProps[] = [
 
 export default function EsperienzePage() {
   return (
-    // 3. Layout e Sfondo: Sfondo var(--color-sand) e tag semantico <main>
-    <main className="min-h-screen bg-[var(--color-sand)] pt-32 pb-32 md:py-40">
+    // 3. Layout e Sfondo: Sfondo var(--color-sand) (il <main> è nel layout)
+    <div className="min-h-screen bg-[var(--color-sand)] pt-32 pb-32 md:py-40">
       
       {/* 4. Spaziatura 'Breathtaking': py-24, gap-12, ampi margini */}
       <section className="container mx-auto px-4 md:px-8">
@@ -75,6 +75,6 @@ export default function EsperienzePage() {
         </div>
 
       </section>
-    </main>
+    </div>
   );
 }

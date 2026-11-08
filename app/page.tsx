@@ -14,26 +14,26 @@ const homeExperiences: ExperienceCardProps[] = [
   {
     title: "Passeggiate in Pineta",
     description: "Cavalca tra i profumi e il fresco della pineta del Tombolo. Percorsi adatti a tutti i livelli, ideali per ritrovare la pace interiore a contatto con la natura.",
-    imageSrc: "/home/passeggiata in pineta.png",
+    imageSrc: "/home/passeggiata-in-pineta.png",
     imageAlt: "Gruppo di cavalieri in passeggiata nella pineta del Tombolo",
     href: "/esperienze/in-pineta",
-    ctaLabel: "Scopri il percorso &rarr;",
+    ctaLabel: "Scopri il percorso →",
   },
   {
     title: "Calici al Tramonto",
     description: "Un'esperienza d'élite esclusiva: raggiungi a cavallo la riva del mare e brinda al tramonto con il tuo drink preferito. Romanticismo puro in Maremma.",
-    imageSrc: "/home/calici al tramonto.jpg",
+    imageSrc: "/home/calici-al-tramonto.jpg",
     imageAlt: "Cavalieri con calici al tramonto sulla spiaggia",
     href: "/servizi-elite",
     badge: "Elite",
-    ctaLabel: "Prenota l'esperienza &rarr;",
+    ctaLabel: "Prenota l'esperienza →",
   },
 ];
 
 export default function HomePage() {
   return (
-    // <main> come container semantico principale
-    <main className="w-full bg-[var(--color-sand)] overflow-x-hidden">
+    // Il <main> è nel layout: qui basta un contenitore
+    <div className="w-full bg-[var(--color-sand)] overflow-x-hidden">
       
       {/* 
         1. STRUTTURA DEL FLUSSO:
@@ -111,13 +111,13 @@ export default function HomePage() {
             {/* Call to action Finale */}
             <div className="text-center mt-16 md:mt-24">
               <Button as="link" href="/esperienze" variant="outline" size="lg">
-                Vedi tutte le esperienze &rarr;
+                Vedi tutte le esperienze →
               </Button>
             </div>
           </div>
         </section>
         
       </div>
-    </main>
+    </div>
   );
 }

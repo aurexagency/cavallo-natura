@@ -11,6 +11,14 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
+// Ricalcolo delle posizioni di ScrollTrigger quando cambia il layout (foto o font
+// caricati). Più caroselli condividono lo stesso timer: un solo refresh per raffica.
+let refreshTimer: ReturnType<typeof setTimeout> | undefined;
+function scheduleScrollTriggerRefresh() {
+  clearTimeout(refreshTimer);
+  refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+}
+
 interface ImageType {
   src: string;
   alt: string;
@@ -82,8 +90,16 @@ export default function GalleryCarousel({ images }: GalleryCarouselProps) {
       });
     });
 
+    // Ogni carosello è "pinnato": se cambia l'altezza di quanto sta sopra
+    // (font web, foto delle sezioni precedenti) i punti di start/end vanno ricalcolati.
+    document.fonts?.ready.then(scheduleScrollTriggerRefresh);
+    window.addEventListener('load', scheduleScrollTriggerRefresh);
+
     // Cleanup gestito da GSAP MatchMedia
-    return () => mm.revert();
+    return () => {
+      window.removeEventListener('load', scheduleScrollTriggerRefresh);
+      mm.revert();
+    };
   }, { scope: containerRef });
 
   // Accessibilità Lightbox: chiusura con ESC e prevenzione scroll quando aperto
@@ -137,6 +153,7 @@ export default function GalleryCarousel({ images }: GalleryCarouselProps) {
                   width={image.width}
                   height={image.height}
                   sizes="(max-width: 768px) 85vw, 50vw"
+                  onLoad={scheduleScrollTriggerRefresh}
                   className="block w-[85vw] h-auto md:w-auto md:h-[70vh] group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                 />
 

@@ -9,7 +9,7 @@ export interface ImageDimensions {
 }
 
 /**
- * Legge le dimensioni reali di un file in /public (es. "/gallery/in pineta/1.jpg").
+ * Legge le dimensioni reali di un file in /public (es. "/gallery/in-pineta/1.jpg").
  * - Tiene conto dell'orientamento EXIF (foto scattate in verticale).
  * - Restituisce `null` se il file non esiste o non è leggibile, così il chiamante
  *   può scartare il riquadro invece di mostrare un'immagine rotta.
