@@ -24,7 +24,7 @@ export default function HeroSequence() {
   // re-render continui in React, mantenendo il thread libero e ultra fluido.
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const currentFrameRef = useRef(0);
-  const frameCount = 180; // Da hero - frame 2_000 a hero - frame 2_179
+  const frameCount = 152; // Da hero - frame 2_000 a hero - frame 2_151
   
   // Funzione helper per ottenere il percorso del frame
   const getFramePath = (index: number) => {
@@ -156,7 +156,7 @@ export default function HeroSequence() {
           // Pinna esattamente quando il contenitore tocca il bordo alto della viewport
           start: "top top", 
           // 2. Timing e fluidità: end generoso (+4 volte l'altezza viewport)
-          // per diluire i 180 frame in un movimento pacato e controllato (no scatti)
+          // per diluire i 152 frame in un movimento pacato e controllato (no scatti)
           end: "+=400%", 
           pin: true, 
           // scrub a 1 per ammorbidire perfettamente l'inerzia della rotellina del mouse (interpolazione)
@@ -175,8 +175,8 @@ export default function HeroSequence() {
       // Aggiungiamo l'animazione della CTA (slide up + fade in)
       tl.fromTo(ctaRef.current,
         { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 25, ease: "power2.out" },
-        85
+        { autoAlpha: 1, y: 0, duration: 21, ease: "power2.out" },
+        72
       );
 
       return () => {
