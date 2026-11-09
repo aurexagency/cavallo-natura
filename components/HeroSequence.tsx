@@ -1,204 +1,146 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import Button from "@/components/ui/Button";
+import HeroLogo from "@/components/HeroLogo";
 
-// Registrazione rigorosa dei plugin per prevenire errori di calibrazione lato client
+// Registrazione dei plugin GSAP (lato client)
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-// Numero di frame in /public/hero/frames (frame-000.webp … frame-151.webp)
-const frameCount = 152;
+// Video all-intra (un keyframe per fotogramma): ogni posizione di scroll è
+// decodificabile da sola, quindi lo scrubbing va avanti e indietro senza scatti.
+const HERO_VIDEO = "/hero/hero.mp4";
+const HERO_POSTER = "/hero/poster.webp";
 
-// Percorso del frame i-esimo
-const getFramePath = (index: number) => `/hero/frames/frame-${index.toString().padStart(3, "0")}.webp`;
+// Durata logica della sequenza, in "fotogrammi": la CTA compare verso la fine.
+const LOGICAL_FRAMES = 152;
+
+// Pixel di scroll entro cui il logo si allontana galoppando
+const LOGO_FADE_DISTANCE = 520;
+
+type Status = "loading" | "ready" | "error";
 
 export default function HeroSequence() {
   const containerRef = useRef<HTMLElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
-  
-  // Stato per la gestione del caricamento (solo per la UI di caricamento, non per l'animazione)
+  const [status, setStatus] = useState<Status>("loading");
   const [loadingProgress, setLoadingProgress] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
-  
-  // 3. Ottimizzazione Render: Usiamo useRef per immagini e playhead per non innescare 
-  // re-render continui in React, mantenendo il thread libero e ultra fluido.
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-  const currentFrameRef = useRef(0);
-  // Funzione core di calibrazione matematica per disegnare il frame
-  // Usa solo ref: identità stabile, nessuna dipendenza
-  const renderFrame = useCallback((index: number) => {
-    if (!canvasRef.current) return;
-    
-    // Trova il frame caricato più vicino (se l'utente scrolla veloce e il frame esatto non è ancora pronto)
-    let img = imagesRef.current[index];
-    if (!img || !img.complete || img.naturalWidth === 0) {
-      // Fallback: cerca all'indietro l'ultimo frame caricato con successo per evitare sfarfallii
-      for (let i = index - 1; i >= 0; i--) {
-        if (imagesRef.current[i]?.complete && imagesRef.current[i].naturalWidth > 0) {
-          img = imagesRef.current[i];
-          break;
-        }
-      }
-    }
-    
-    if (!img || !img.complete || img.naturalWidth === 0) return;
 
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d", { alpha: false }); 
-    if (!ctx) return;
-    
-    const cw = canvas.width;
-    const ch = canvas.height;
-    const iw = img.width;
-    const ih = img.height;
-    
-    // Logica matematica per emulare background-size: cover
-    const scale = Math.max(cw / iw, ch / ih);
-    const w = iw * scale;
-    const h = ih * scale;
-    const x = (cw - w) / 2;
-    const y = (ch - h) / 2;
-    
-    ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, x, y, w, h);
-    
-    currentFrameRef.current = index;
+  // Progresso di caricamento dal buffer del video (solo per la UI di attesa)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onProgress = () => {
+      if (!video.duration || video.buffered.length === 0) return;
+      const buffered = video.buffered.end(video.buffered.length - 1);
+      setLoadingProgress(Math.min(100, Math.round((buffered / video.duration) * 100)));
+    };
+    const onReady = () => {
+      video.pause();
+      setStatus("ready");
+    };
+    const onError = () => {
+      console.error("Errore caricamento video hero. Mostro il poster statico.");
+      setStatus("error");
+    };
+
+    video.addEventListener("progress", onProgress);
+    video.addEventListener("loadeddata", onReady);
+    video.addEventListener("error", onError);
+
+    // Se il video arriva dalla cache, "loadeddata" può essere già scattato prima
+    // che React agganci i listener: in quel caso lo stato va letto subito.
+    if (video.error) onError();
+    else if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) onReady();
+    else onProgress();
+
+    return () => {
+      video.removeEventListener("progress", onProgress);
+      video.removeEventListener("loadeddata", onReady);
+      video.removeEventListener("error", onError);
+    };
   }, []);
 
-  // Preloading asincrono OTTIMIZZATO per Vercel/Produzione
-  useEffect(() => {
-    let loadedCount = 0;
-    const tempImages: HTMLImageElement[] = [];
+  // Animazione legata allo scroll: il playhead interpola il tempo del video
+  useGSAP(
+    () => {
+      const video = videoRef.current;
+      if (!video || !containerRef.current) return;
 
-    // Pre-popoliamo l'array di immagini vuote per mantenere l'ordine
-    for (let i = 0; i < frameCount; i++) {
-      tempImages.push(new Image());
-    }
-    imagesRef.current = tempImages;
+      const mm = gsap.matchMedia();
 
-    // Funzione per caricare silenziosamente i frame successivi al primo
-    const loadRestOfFrames = () => {
-      for (let i = 1; i < frameCount; i++) {
-        const img = tempImages[i];
-        
-        img.onload = () => {
-          loadedCount++;
-          setLoadingProgress(Math.round((loadedCount / frameCount) * 100));
+      // Animazione attiva solo senza "riduci movimento"
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // In caricamento la CTA resta nascosta sotto l'overlay;
+        // se il video fallisce si mostra il poster fermo con la CTA visibile.
+        if (status === "error") gsap.set(ctaRef.current, { autoAlpha: 1, y: 0 });
+        if (status !== "ready") return;
+
+        const playhead = { time: 0 };
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "+=400%",
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        tl.to(playhead, {
+          time: video.duration,
+          ease: "none",
+          duration: LOGICAL_FRAMES,
+          onUpdate: () => {
+            // Evita di richiedere un seek a ogni micro-variazione dello scroll
+            if (Math.abs(video.currentTime - playhead.time) > 1 / 60) {
+              video.currentTime = playhead.time;
+            }
+          },
+        }, 0);
+
+        // CTA: slide up + fade in verso la fine della sequenza
+        tl.fromTo(
+          ctaRef.current,
+          { autoAlpha: 0, y: 30 },
+          { autoAlpha: 1, y: 0, duration: 21, ease: "power2.out" },
+          72
+        );
+
+        return () => {
+          tl.kill();
         };
-        img.onerror = () => {
-          loadedCount++;
-        };
-        
-        // Assegnando la src, il browser accoda il download in background
-        img.src = getFramePath(i);
-      }
-    };
-
-    // PRIORITÀ MASSIMA: Carichiamo solo il primissimo frame per sbloccare subito la UI
-    const firstImg = tempImages[0];
-    firstImg.onload = () => {
-      loadedCount++;
-      setIsLoaded(true); // Sblocca immediatamente lo spinner di caricamento
-      requestAnimationFrame(() => renderFrame(0)); // Disegna istantaneamente il primo frame
-      loadRestOfFrames(); // Avvia il download massivo del resto della sequenza in background
-    };
-    
-    firstImg.onerror = () => {
-      console.error("Errore caricamento frame 0. Sblocco d'emergenza della UI.");
-      setIsLoaded(true);
-      loadRestOfFrames();
-    };
-    
-    // Innesca il download del primo frame
-    firstImg.src = getFramePath(0);
-
-  }, [renderFrame]);
-
-  // Handler del resize perricalibrare le coordinate di GSAP
-  const resizeCanvas = useCallback(() => {
-    if (!canvasRef.current) return;
-    canvasRef.current.width = window.innerWidth;
-    canvasRef.current.height = window.innerHeight;
-    renderFrame(currentFrameRef.current);
-    ScrollTrigger.refresh();
-  }, [renderFrame]);
-
-  useEffect(() => {
-    if (isLoaded) {
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
-    }
-    return () => window.removeEventListener("resize", resizeCanvas);
-  }, [isLoaded, resizeCanvas]);
-
-  // 1. Calibrazione dello ScrollTrigger perfetto
-  useGSAP(() => {
-    if (!isLoaded || !canvasRef.current || !containerRef.current) return;
-    
-    const mm = gsap.matchMedia();
-    
-    // 4. Accessibilità: Animazione attivata SOLO in assenza di motion-reduce
-    mm.add("(prefers-reduced-motion: no-preference)", () => {
-      
-      // Definiamo il playhead (oggetto fittizio) da interpolare
-      const playhead = { frame: 0 };
-      
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          // Pinna esattamente quando il contenitore tocca il bordo alto della viewport
-          start: "top top", 
-          // 2. Timing e fluidità: end generoso (+4 volte l'altezza viewport)
-          // per diluire i 152 frame in un movimento pacato e controllato (no scatti)
-          end: "+=400%", 
-          pin: true, 
-          // scrub a 1 per ammorbidire perfettamente l'inerzia della rotellina del mouse (interpolazione)
-          scrub: 1, 
-        }
       });
 
-      tl.to(playhead, {
-        frame: frameCount - 1,
-        snap: "frame", // Assicura che l'indice frame sia un int e non un float
-        ease: "none",  // Timing lineare rigoroso
-        duration: frameCount, // Usiamo frameCount come durata logica per la timeline
-        onUpdate: () => renderFrame(playhead.frame), // Update delegato a GSAP
-      }, 0);
+      // Movimento ridotto: nessuno scroll-scrub, poster fermo e CTA visibile
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(ctaRef.current, { autoAlpha: 1, y: 0 });
+      });
 
-      // Aggiungiamo l'animazione della CTA (slide up + fade in)
-      tl.fromTo(ctaRef.current,
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 21, ease: "power2.out" },
-        72
-      );
+      return () => mm.revert();
+    },
+    // revertOnUpdate: al cambio di stato annulla tween e pin della passata precedente
+    { dependencies: [status], scope: containerRef, revertOnUpdate: true }
+  );
 
-      return () => {
-        tl.kill(); 
-      };
-    });
-
-    // 4. Accessibilità: Fallback per movimento ridotto
-    mm.add("(prefers-reduced-motion: reduce)", () => {
-      // Render statico dell'ultimo o primo frame per non omettere nulla visivamente, ma bloccando lo scroll finto
-      renderFrame(0);
-      gsap.set(ctaRef.current, { autoAlpha: 1, y: 0 });
-    });
-
-    return () => mm.revert();
-  }, { dependencies: [isLoaded], scope: containerRef }); // Scope per isolamento performance
+  // Dopo il caricamento i fotogrammi possono cambiare altezza di pagina: ricalcola i pin
+  useEffect(() => {
+    if (status === "ready") ScrollTrigger.refresh();
+  }, [status]);
 
   return (
-    <section 
-      ref={containerRef} 
+    <section
+      ref={containerRef}
       aria-labelledby="hero-title"
-      // L'altezza 100vh nativa, supportata dal pinning, disaccoppia la sequenza
-      // permettendo la rivelazione sottostante
       className="relative w-full h-screen bg-[var(--color-sand)] overflow-hidden"
     >
       {/* Titolo semantico accessibile per SEO / screen reader */}
@@ -206,27 +148,40 @@ export default function HeroSequence() {
         Cavallo Natura | Centro Equestre in Maremma Toscana
       </h1>
 
-      {!isLoaded && (
+      {status === "loading" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[var(--color-sand)] text-[var(--color-saddle)]">
-          <span className="text-5xl animate-pulse mb-6">🐎</span>
+          <span className="text-5xl animate-pulse mb-6" aria-hidden="true">
+            🐎
+          </span>
           <p className="font-display text-xl font-semibold tracking-wide">
             Caricamento... {loadingProgress}%
           </p>
         </div>
       )}
 
-      {/* Canvas Layer */}
-      <canvas
-        ref={canvasRef}
-        className={`absolute top-0 left-0 w-full h-full block transition-opacity duration-1000 ${
-          isLoaded ? 'opacity-100' : 'opacity-0'
+      {/* Video di sfondo: muto, inline, controllato dallo scroll (nessun autoplay) */}
+      <video
+        ref={videoRef}
+        src={HERO_VIDEO}
+        poster={HERO_POSTER}
+        muted
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        aria-hidden="true"
+        tabIndex={-1}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+          status === "loading" ? "opacity-0" : "opacity-100"
         }`}
       />
-      
-      {/* Velo per Leggibilità (mix-blend-multiply per amalgama cinematografica) */}
+
+      {/* Velo per leggibilità */}
       <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none mix-blend-multiply" />
 
-      {/* Pulsante CTA posizionato strategicamente in basso */}
+      {/* Logo a ritmo di galoppo: entra con 4 battiti e polvere, esce galoppando allo scroll */}
+      <HeroLogo active={status !== "loading"} fadeDistance={LOGO_FADE_DISTANCE} />
+
+      {/* CTA posizionata in basso */}
       <div className="absolute bottom-0 left-0 w-full pb-24 md:pb-32 flex justify-center px-4 pointer-events-auto z-10">
         <div ref={ctaRef} className="opacity-0">
           <Button
