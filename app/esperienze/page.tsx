@@ -12,24 +12,26 @@ const experiencesData: ExperienceCardProps[] = [
   {
     title: "Pineta",
     description: "Una passeggiata rigorosamente a passo nella Pineta del Tombolo. Con istruttore-guida, adatta anche a persone non esperte.",
-    imageSrc: "/pagine-servizi/foto-in-pineta.webp",
-    imageAlt: "Passeggiata a cavallo nella Pineta del Tombolo - Cavallo Natura",
+    // Foto 4:3 come la card: nessun ritaglio, il soggetto resta al centro
+    imageSrc: "/gallery/in-pineta/4.jpg",
+    imageAlt: "Cavaliere su un cavallo grigio lungo un sentiero nella Pineta del Tombolo - Cavallo Natura",
     href: "/esperienze/in-pineta",
     badge: "1 Ora",
   },
   {
     title: "Pineta e Spiaggia",
     description: "Due passeggiate private tra la Pineta del Tombolo e il mare: 2 ore, oppure 2 ore e 45 minuti con 2,5 km di spiaggia libera sulla battigia. Con istruttore dedicato, adatte anche a principianti.",
-    imageSrc: "/pagine-servizi/foto-in-pineta-e-spiaggia.webp",
-    imageAlt: "Pineta e Spiaggia a cavallo tra pineta e battigia in riva al mare - Cavallo Natura",
+    // Foto 4:3 come la card: nessun ritaglio, il soggetto resta al centro
+    imageSrc: "/gallery/in-riva-al-mare/in-riva-al-mare-4.jpg",
+    imageAlt: "Amazzone su un cavallo bianco in riva al mare - Cavallo Natura",
     href: "/esperienze/in-pineta-e-spiaggia",
     badge: "2 Proposte",
   },
   {
     title: "Per esperti",
     description: "Un'avventura dinamica pensata per cavalieri provetti. Galoppa in sicurezza sulla spiaggia e metti alla prova le tue abilità in totale sintonia con il cavallo.",
-    imageSrc: "/esperienze-a-cavallo/per-esperti.jpeg",
-    imageAlt: "Cavaliere esperto al galoppo veloce sulla spiaggia maremmana",
+    imageSrc: "/esperienze-a-cavallo/foto-pagina-esperti.jpg",
+    imageAlt: "Cavaliere esperto al galoppo sulla battigia al tramonto, con il mare e l'orizzonte sullo sfondo",
     href: "/esperienze/per-esperti",
     badge: "Avanzato",
   },

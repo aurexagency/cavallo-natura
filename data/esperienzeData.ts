@@ -35,7 +35,7 @@ export interface ExperiencePricing {
 }
 
 /** Icone delle righe "scheda" di una proposta */
-export type FactIcon = "pin" | "user" | "level" | "age" | "weight" | "group";
+export type FactIcon = "pin" | "user" | "level" | "age" | "weight" | "group" | "calendar";
 
 export interface ProposalFact {
   icon: FactIcon;
@@ -58,6 +58,8 @@ export interface ExperienceProposal {
   number: string;
   title: string;
   tagline: string;
+  /** Paragrafo opzionale sotto il sottotitolo */
+  description?: string;
   badge: string;
   image: { src: string; alt: string };
   highlights: ProposalHighlight[];
@@ -315,14 +317,17 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
     slug: "per-esperti",
     title: "Escursione per Esperti",
     subtitle: "Energia, tecnica e libertà in piena sintonia col cavallo",
-    headerBadges: [{ label: "Cavalieri Esperti", tone: "wine" }],
+    headerBadges: [
+      { label: "Cavalieri Esperti", tone: "wine" },
+      { label: "2 Proposte", tone: "pine" },
+    ],
     seo: {
       title: "Escursioni a Cavallo per Esperti e Galoppo in Spiaggia | Cavallo Natura",
       description:
-        "Sei un cavaliere esperto? Vivi un'escursione dinamica a cavallo in Maremma tra sentieri tecnici in pineta e galoppate in sicurezza sulla spiaggia.",
+        "Sei un cavaliere esperto? Scegli tra un'escursione di un'intera giornata a Diaccia Botrona e una passeggiata privata di 2 ore tra la pineta e la spiaggia, in Maremma.",
       ogTitle: "Escursioni a Cavallo per Esperti e Galoppo in Spiaggia | Cavallo Natura",
       ogDescription:
-        "Sei un cavaliere esperto? Vivi un'escursione dinamica a cavallo in Maremma tra sentieri tecnici in pineta e galoppate in sicurezza sulla spiaggia.",
+        "Sei un cavaliere esperto? Scegli tra un'escursione di un'intera giornata a Diaccia Botrona e una passeggiata privata di 2 ore tra la pineta e la spiaggia, in Maremma.",
     },
     teaser: {
       title: "Escursione per Esperti",
@@ -330,48 +335,91 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
       badge: "Avanzato",
     },
     heroImage: {
-      src: "/esperienze-a-cavallo/per-esperti.jpeg",
-      alt: "Cavaliere esperto al galoppo sulla spiaggia maremmana",
+      src: "/esperienze-a-cavallo/foto-pagina-esperti.jpg",
+      alt: "Cavaliere esperto al galoppo sulla battigia al tramonto, con il mare e l'orizzonte sullo sfondo",
     },
     overview: {
-      lead: "Un'avventura dinamica ed emozionante, progettata esclusivamente per chi possiede già piena padronanza delle tre andature.",
+      lead: "Un'avventura dinamica ed emozionante, progettata per chi ha già esperienza in sella: scegli tra la giornata intera a Diaccia Botrona e la passeggiata di 2 ore tra pineta e spiaggia.",
       paragraphs: [
         "Per i cavalieri esperti, la Maremma offre un terreno di equitazione di rara bellezza. Questo percorso valorizza la complicità e l'ascolto reciproco tra cavaliere e cavallo, alternando tratti di passo disteso a momenti più dinamici di trotto e galoppo.",
         "Attraverseremo i sentieri più suggestivi della pineta fino a raggiungere i tratti di litorale dove, in totale sicurezza e nel pieno rispetto del benessere dell'animale, potrai provare la sensazione unica di galoppare in riva al mare.",
       ],
     },
-    details: [
-      {
-        icon: "compass",
-        title: "Percorso",
-        value: "Diaccia Botrona",
-      },
-      {
-        icon: "clock",
-        title: "Durata",
-        value: "5–6 ore",
-        description: "Intera giornata con sosta",
-      },
-      {
-        icon: "shield",
-        title: "Informazioni",
-        items: [
-          "Adatto a: Cavalieri Esperti",
-          "Partenza: Cavallonatura – Marina di Grosseto",
-          "Periodo: ottobre – marzo (ideale per avvistare uccelli migratori)",
-          "Partecipanti: 2–4 persone",
-          "Andature: passo, trotto, galoppo",
-          "Età minima: 14 anni – max 90 kg",
-        ],
-      },
-      ABBIGLIAMENTO_STANDARD,
-    ],
+    proposals: {
+      eyebrow: "Scegli la tua escursione",
+      title: "Due Avventure in Sella",
+      sharedEyebrow: "Valido per entrambe le proposte",
+      sharedTitle: "Prima di Partire",
+      items: [
+        {
+          id: "diaccia-botrona-giornata-intera",
+          number: "Proposta 01",
+          title: "Escursione di un'intera giornata a Diaccia Botrona",
+          tagline: "Intera giornata con sosta, per cavalieri esperti",
+          badge: "Intera giornata",
+          image: {
+            src: "/gallery/per-esperti/1.jpg",
+            alt: "Due cavalieri al galoppo sulla spiaggia con il mare sullo sfondo",
+          },
+          highlights: [
+            { value: "5–6 ore", label: "Durata" },
+            { value: "2–4", label: "Partecipanti" },
+            { value: "ott – mar", label: "Periodo" },
+          ],
+          facts: [
+            { icon: "pin", label: "Percorso", value: "Diaccia Botrona" },
+            { icon: "pin", label: "Partenza", value: "Cavallonatura – Marina di Grosseto" },
+            { icon: "level", label: "Adatto a", value: "Cavalieri Esperti" },
+            { icon: "level", label: "Andature", value: "Passo, trotto, galoppo" },
+            { icon: "calendar", label: "Periodo", value: "Ottobre – marzo (ideale per avvistare uccelli migratori)" },
+            { icon: "group", label: "Partecipanti", value: "2–4 persone" },
+            { icon: "age", label: "Età minima", value: "14 anni" },
+            { icon: "weight", label: "Peso massimo", value: "90 kg" },
+          ],
+          whatsappMessage:
+            "Ciao Cavallo Natura! Sono un cavaliere esperto e vorrei prenotare l'escursione di un'intera giornata a Diaccia Botrona. Potete indicarmi le disponibilità?",
+        },
+        {
+          id: "passeggiata-2-ore-per-esperti",
+          number: "Proposta 02",
+          title: "Passeggiata privata a cavallo – 2 ore (per esperti)",
+          tagline: "Pineta del Tombolo e un suggestivo tratto di spiaggia",
+          description:
+            "Vivi la magia di una cavalcata immersa nella natura, tra la Pineta del Tombolo e un suggestivo tratto di spiaggia. Accompagnato da una guida esperta, potrai goderti un'esperienza rigenerante in un'atmosfera autentica e rilassante.",
+          badge: "2 ore",
+          image: {
+            src: "/gallery/in-riva-al-mare/dsc05382.jpg",
+            alt: "Amazzone su un cavallo grigio che attraversa la battigia al tramonto",
+          },
+          highlights: [
+            { value: "2 ore", label: "Durata" },
+            { value: "1 km", label: "di spiaggia libera" },
+          ],
+          facts: [
+            { icon: "pin", label: "Percorso", value: "Pineta e breve tratto di spiaggia (circa 1 km di spiaggia libera)" },
+            { icon: "user", label: "Guida", value: "Istruttore dedicato per l’intera durata" },
+            {
+              icon: "level",
+              label: "Livello richiesto",
+              value:
+                "Adatto a persone con esperienza. Le andature vengono stabilite dall’istruttore in base all’assetto e alla sicurezza del cliente: se non idoneo ad andature più avanzate, l’istruttore valuterà la modalità più adatta",
+            },
+            { icon: "age", label: "Età minima", value: "14 anni" },
+            { icon: "weight", label: "Peso massimo", value: "90 kg" },
+            { icon: "group", label: "Partecipanti ideali", value: "Coppie o piccoli gruppi di amici" },
+          ],
+          whatsappMessage:
+            "Ciao Cavallo Natura! Vorrei prenotare la passeggiata privata da 2 ore per esperti (pineta e breve tratto di spiaggia). Potete indicarmi le disponibilità?",
+        },
+      ],
+    },
+    details: [ABBIGLIAMENTO_STANDARD],
     video: {
       src: "/videos/esperienze/per-esperti.mp4",
       poster: "/esperienze-a-cavallo/per-esperti.jpeg",
       caption:
         "Pura adrenalina ed eleganza: l'armonia del galoppo lungo il litorale della Maremma Toscana.",
-      ariaLabel: "Video dell'esperienza Escursione per Esperti",
+      ariaLabel: "Video delle escursioni a cavallo per esperti",
     },
     gallery: [
       { src: "/esperienze-a-cavallo/per-esperti.jpeg", alt: "Cavaliere esperto al galoppo lungo il litorale maremmano" },

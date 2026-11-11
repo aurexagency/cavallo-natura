@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import {
+  CalendarIcon,
   IdCardIcon,
   PinIcon,
   ShieldInfoIcon,
@@ -19,6 +20,7 @@ const factIcons: Record<FactIcon, ReactNode> = {
   age: <IdCardIcon className="w-6 h-6" />,
   weight: <WeightIcon className="w-6 h-6" />,
   group: <UsersIcon className="w-6 h-6" />,
+  calendar: <CalendarIcon className="w-6 h-6" />,
 };
 
 interface ExperienceProposalProps {
@@ -64,6 +66,11 @@ export default function ExperienceProposal({ proposal, index, bgClass, lead }: E
           <p className="text-lg md:text-xl text-[var(--color-saddle)] font-medium leading-relaxed italic">
             {proposal.tagline}
           </p>
+          {proposal.description && (
+            <p className="max-w-3xl text-base md:text-lg text-[var(--color-saddle)] leading-relaxed">
+              {proposal.description}
+            </p>
+          )}
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
