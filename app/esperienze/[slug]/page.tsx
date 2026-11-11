@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Button from "@/components/ui/Button";
 import BookingPlaceholder from "@/components/ui/BookingPlaceholder";
 import SectionHeader from "@/components/ui/SectionHeader";
+import ExperienceProposal from "@/components/ui/ExperienceProposal";
 import { CheckList, SpecCard, SpecValue } from "@/components/ui/SpecCard";
 import {
   BootIcon,
@@ -241,9 +242,32 @@ export default async function ExperienceDetailPage({ params }: PageProps) {
         </section>
       )}
 
+      {/* ── Sezione 3b: Più proposte di passeggiata (opzionale) ── */}
+      {experience.proposals?.items.map((proposal, i) => (
+        <ExperienceProposal
+          key={proposal.id}
+          proposal={proposal}
+          index={i}
+          bgClass={altBg(++section)}
+          lead={
+            i === 0 && experience.proposals ? (
+              <SectionHeader
+                id="proposals-title"
+                eyebrow={experience.proposals.eyebrow}
+                title={experience.proposals.title}
+              />
+            ) : undefined
+          }
+        />
+      ))}
+
       {/* ── Sezione 4: Scheda servizio ── */}
       <section aria-labelledby="specs-title" className={`${altBg(++section)} py-16 md:py-24 px-4 md:px-8`}>
-        <SectionHeader id="specs-title" eyebrow="Scheda Ufficiale del Servizio" title="Dettagli dell'Esperienza" />
+        <SectionHeader
+          id="specs-title"
+          eyebrow={experience.proposals?.sharedEyebrow ?? "Scheda Ufficiale del Servizio"}
+          title={experience.proposals?.sharedTitle ?? "Dettagli dell'Esperienza"}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto">
           {experience.details.map((card) => (

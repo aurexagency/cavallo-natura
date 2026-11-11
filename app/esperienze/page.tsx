@@ -11,19 +11,19 @@ export const metadata: Metadata = {
 const experiencesData: ExperienceCardProps[] = [
   {
     title: "Pineta",
-    description: "Un’esperienza rilassante tra la Pineta del Tombolo e un tratto di spiaggia libera (1 km). Con istruttore dedicato, adatta anche a principianti.",
+    description: "Una passeggiata rigorosamente a passo nella Pineta del Tombolo. Con istruttore-guida, adatta anche a persone non esperte.",
     imageSrc: "/pagine-servizi/foto-in-pineta.webp",
-    imageAlt: "Passeggiata a cavallo nella Pineta del Tombolo e spiaggia libera - Cavallo Natura",
+    imageAlt: "Passeggiata a cavallo nella Pineta del Tombolo - Cavallo Natura",
     href: "/esperienze/in-pineta",
-    badge: "2 Ore",
+    badge: "1 Ora",
   },
   {
     title: "Pineta e Spiaggia",
-    description: "Vivi la magia di una rilassante passeggiata tra la Pineta del Tombolo e 2,5 km di spiaggia libera sulla battigia (2h 45m). Con istruttore dedicato, adatta anche a principianti.",
+    description: "Due passeggiate private tra la Pineta del Tombolo e il mare: 2 ore, oppure 2 ore e 45 minuti con 2,5 km di spiaggia libera sulla battigia. Con istruttore dedicato, adatte anche a principianti.",
     imageSrc: "/pagine-servizi/foto-in-pineta-e-spiaggia.webp",
     imageAlt: "Pineta e Spiaggia a cavallo tra pineta e battigia in riva al mare - Cavallo Natura",
     href: "/esperienze/in-pineta-e-spiaggia",
-    badge: "2h 45m",
+    badge: "2 Proposte",
   },
   {
     title: "Per esperti",

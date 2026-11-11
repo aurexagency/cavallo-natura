@@ -53,6 +53,55 @@ export function ShieldInfoIcon({ className }: IconProps) {
   );
 }
 
+export function PinIcon({ className }: IconProps) {
+  return (
+    <svg {...strokeProps} className={className}>
+      <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1113 0c0 5.4-6.5 11-6.5 11z" />
+      <circle cx="12" cy="10" r="2.4" />
+    </svg>
+  );
+}
+
+export function UserIcon({ className }: IconProps) {
+  return (
+    <svg {...strokeProps} className={className}>
+      <circle cx="12" cy="8" r="3.6" />
+      <path d="M5 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5" />
+    </svg>
+  );
+}
+
+export function UsersIcon({ className }: IconProps) {
+  return (
+    <svg {...strokeProps} className={className}>
+      <circle cx="9" cy="8.5" r="3.2" />
+      <path d="M2.8 19.5c0-3.4 2.8-5.6 6.2-5.6s6.2 2.2 6.2 5.6" />
+      <path d="M15.6 5.6a3.2 3.2 0 010 5.8" />
+      <path d="M17.2 14.2c2.4.5 4 2.4 4 5.3" />
+    </svg>
+  );
+}
+
+export function IdCardIcon({ className }: IconProps) {
+  return (
+    <svg {...strokeProps} className={className}>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <circle cx="9" cy="11" r="2" />
+      <path d="M6 16c.4-1.6 1.7-2.4 3-2.4s2.6.8 3 2.4" />
+      <path d="M14.5 10h3.5M14.5 13.5h3.5" />
+    </svg>
+  );
+}
+
+export function WeightIcon({ className }: IconProps) {
+  return (
+    <svg {...strokeProps} className={className}>
+      <path d="M7 8h10l2.4 11H4.6L7 8z" />
+      <circle cx="12" cy="5" r="2" />
+    </svg>
+  );
+}
+
 export function HeartIcon({ className }: IconProps) {
   return (
     <svg {...strokeProps} className={className}>

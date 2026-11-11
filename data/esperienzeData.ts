@@ -34,6 +34,37 @@ export interface ExperiencePricing {
   source: string;
 }
 
+/** Icone delle righe "scheda" di una proposta */
+export type FactIcon = "pin" | "user" | "level" | "age" | "weight" | "group";
+
+export interface ProposalFact {
+  icon: FactIcon;
+  label: string;
+  value: string;
+}
+
+/** Dato in grande, a colpo d'occhio (es. "2 ore" / "Durata") */
+export interface ProposalHighlight {
+  value: string;
+  label: string;
+}
+
+/**
+ * Una passeggiata dentro una stessa esperienza. Se un'esperienza ha `proposals`,
+ * la pagina le mostra una per sezione al posto dei riquadri generici.
+ */
+export interface ExperienceProposal {
+  id: string;
+  number: string;
+  title: string;
+  tagline: string;
+  badge: string;
+  image: { src: string; alt: string };
+  highlights: ProposalHighlight[];
+  facts: ProposalFact[];
+  whatsappMessage: string;
+}
+
 export type ExperienceSlug = "in-pineta" | "in-pineta-e-spiaggia" | "per-esperti";
 
 export interface ExperienceDetail {
@@ -59,6 +90,15 @@ export interface ExperienceDetail {
   heroImage: { src: string; alt: string };
   overview: { lead: string; paragraphs: string[] };
   pricing?: ExperiencePricing;
+  /** Più passeggiate nella stessa esperienza (sezioni dedicate) */
+  proposals?: {
+    eyebrow: string;
+    title: string;
+    items: ExperienceProposal[];
+    /** Titoli della sezione con i riquadri comuni a tutte le proposte */
+    sharedEyebrow: string;
+    sharedTitle: string;
+  };
   details: ExperienceDetailCard[];
   video: { src: string; poster: string; caption: string; ariaLabel: string };
   gallery: { src: string; alt: string }[];
@@ -85,82 +125,51 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
     slug: "in-pineta",
     title: "Pineta",
     subtitle: "Un’esperienza rilassante, adatta anche a principianti",
-    headerBadges: [{ label: "Durata 2 Ore", tone: "wine" }],
+    headerBadges: [{ label: "Durata 1 Ora", tone: "wine" }],
     seo: {
       title: "Pineta | Cavallo Natura Maremma",
       description:
-        "Vivi la magia di una cavalcata privata di 2 ore tra la Pineta del Tombolo e 1 km di spiaggia libera a Marina di Grosseto. Istruttore dedicato, adatta anche a principianti.",
+        "Vivi la magia di una passeggiata a passo di 1 ora nella Pineta del Tombolo a Marina di Grosseto. Accompagnati da un istruttore-guida, adatta anche a persone non esperte.",
       ogTitle: "Pineta | Cavallo Natura",
       ogDescription:
-        "Vivi la magia di una cavalcata immersa nella natura, tra la Pineta del Tombolo e un tratto di spiaggia libera. Un’esperienza rilassante adatta anche a principianti.",
+        "Vivi la magia di una passeggiata a cavallo immersa nella natura, a passo nella Pineta del Tombolo. Un’esperienza rilassante adatta anche a persone non esperte.",
     },
     teaser: {
       title: "Pineta",
-      subtitle: "Un’esperienza rilassante tra la pineta e il mare",
-      badge: "2 Ore",
+      subtitle: "Un’esperienza rilassante nella Pineta del Tombolo",
+      badge: "1 Ora",
     },
     heroImage: {
       src: "/pagine-servizi/foto-in-pineta.webp",
       alt: "Escursione guidata a cavallo nella pineta secolare di Marina di Grosseto",
     },
     overview: {
-      lead: "Vivi la magia di una cavalcata immersa nella natura, tra la Pineta del Tombolo e un tratto di spiaggia. Accompagnato da una guida esperta, potrai goderti un’esperienza rigenerante in un’atmosfera tranquilla e autentica.",
+      lead: "Vivi la magia di una passeggiata a cavallo immersa nella natura, nella Pineta del Tombolo. Accompagnato da un istruttore-guida, potrai goderti un’esperienza rigenerante in un’atmosfera tranquilla e autentica.",
       paragraphs: [
-        "I sentieri ombreggiati dai pini marittimi secolari offrono un riparo naturale e una sensazione di pace immediata. Il ritmo disteso della passeggiata, cadenzato dal passo sicuro dei nostri cavalli, permette di assaporare ogni profumo della macchia mediterranea fino ad aprirsi verso il litorale tirrenico.",
+        "I sentieri ombreggiati dai pini marittimi secolari offrono un riparo naturale e una sensazione di pace immediata. Il ritmo disteso della passeggiata, rigorosamente a passo e cadenzato dal passo sicuro dei nostri cavalli, permette di assaporare ogni profumo della macchia mediterranea.",
         "La presenza costante di una guida dedicata rende questa uscita perfetta sia per chi si avvicina all'equitazione per la prima volta, sia per chi desidera una parentesi di relax esclusivo in Maremma.",
       ],
     },
-    pricing: {
-      title: "Quote di Partecipazione",
-      options: [
-        {
-          label: "Coppie & Piccoli Gruppi",
-          tone: "pine",
-          price: "€75",
-          unit: "a persona",
-          condition: "(minimo 2 partecipanti)",
-          description:
-            "La formula ideale per coppie, amici o famiglie che desiderano vivere insieme un'esperienza rilassante e privata in Maremma.",
-        },
-        {
-          label: "Esperienza Singola",
-          tone: "wine",
-          price: "€100",
-          unit: "per partecipazione singola",
-          condition: "(istruttore dedicato esclusivo)",
-          description:
-            "Per chi desidera vivere l'escursione in totale intimità con il cavallo e avere un istruttore-guida dedicato al 100% alla propria uscita.",
-        },
-      ],
-      note: "Nessun costo nascosto: istruttore dedicato e cap di sicurezza inclusi.",
-      source: "Tariffe ufficiali della scheda servizio",
-    },
     details: [
       {
-        icon: "clock",
-        title: "Durata & Percorso",
-        value: "2 ore",
-        items: [
-          "Percorso: pineta e breve tratto di spiaggia (1 km di spiaggia libera).",
-          "Tracciati sabbiosi immersi nella fresca Pineta del Tombolo a Marina di Grosseto.",
-        ],
+        icon: "compass",
+        title: "Percorso",
+        value: "Pineta del Tombolo",
       },
       {
-        icon: "compass",
-        title: "Guida & Partecipanti",
-        items: [
-          "Istruttore dedicato per l’intera durata.",
-          "Partecipanti ideali: coppie o piccoli gruppi di amici.",
-          "Esperienza privata studiata per offrire massima cura e serenità.",
-        ],
+        icon: "clock",
+        title: "Durata",
+        value: "1 ora",
       },
       {
         icon: "shield",
-        title: "Livello & Requisiti",
+        title: "Informazioni",
         items: [
-          "Livello richiesto: adatto anche a chi è alla prima esperienza.",
-          "Età minima: 14 anni.",
-          "Peso massimo: 90 kg.",
+          "Passeggiata rigorosamente a passo nella Pineta del Tombolo.",
+          "La passeggiata è adatta a persone non esperte.",
+          "Bambini dai 14 anni compiuti.",
+          "Sarete accompagnati da un istruttore-guida.",
+          "Minimo 2 persone",
         ],
       },
       ABBIGLIAMENTO_STANDARD,
@@ -169,8 +178,8 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
       src: "/videos/esperienze/in-pineta.mp4",
       poster: "/pagine-servizi/foto-in-pineta.webp",
       caption:
-        "Un assaggio della quiete che si respira cavalcando tra i sentieri della Pineta del Tombolo e la spiaggia.",
-      ariaLabel: "Video della passeggiata privata a cavallo di 2 ore",
+        "Un assaggio della quiete che si respira cavalcando tra i sentieri della Pineta del Tombolo.",
+      ariaLabel: "Video della passeggiata a passo di 1 ora nella Pineta del Tombolo",
     },
     gallery: [
       { src: "/gallery/in-pineta/dsc03362.jpg", alt: "Cavaliere al passo tra i pini marittimi della Pineta del Tombolo" },
@@ -181,7 +190,7 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
     cta: {
       eyebrow: "Prenotazione Rapida",
       title: "Pronto a Vivere la Maremma a Cavallo?",
-      text: "Verifica subito la disponibilità dell'esperienza Pineta (2 ore): scrivici su WhatsApp per fissare il giorno e l'orario migliore per te.",
+      text: "Verifica subito la disponibilità dell'esperienza Pineta (1 ora): scrivici su WhatsApp per fissare il giorno e l'orario migliore per te.",
     },
     whatsappMessage:
       "Ciao Cavallo Natura! Vorrei prenotare l'esperienza Pineta. Potete indicarmi le disponibilità?",
@@ -190,105 +199,116 @@ export const EXPERIENCES_DETAILS: Record<ExperienceSlug, ExperienceDetail> = {
   "in-pineta-e-spiaggia": {
     slug: "in-pineta-e-spiaggia",
     title: "Pineta e Spiaggia",
-    subtitle: "Un’esperienza unica, adatta anche a principianti",
+    subtitle: "Due passeggiate private, un’unica emozione",
     headerBadges: [
-      { label: "Durata 2 Ore e 45 Minuti", tone: "wine" },
-      { label: "20 Settembre – 20 Maggio", tone: "pine" },
+      { label: "2 Proposte", tone: "wine" },
+      { label: "Adatte anche a principianti", tone: "pine" },
     ],
-    intro: "Un’esperienza unica, adatta anche a principianti",
     seo: {
       title: "Pineta e Spiaggia | Cavallo Natura Maremma",
       description:
-        "Vivi la magia di una rilassante passeggiata a cavallo di 2 ore e 45 minuti tra la Pineta del Tombolo e 2,5 km di spiaggia libera sulla battigia a Marina di Grosseto. Istruttore dedicato, adatta anche a principianti.",
+        "Due passeggiate private a cavallo a Marina di Grosseto: 2 ore tra la Pineta del Tombolo e un tratto di spiaggia, oppure 2 ore e 45 minuti con 2,5 km di spiaggia libera sulla battigia. Istruttore dedicato, adatte anche a principianti.",
       ogTitle: "Pineta e Spiaggia | Cavallo Natura",
       ogDescription:
-        "Un’esperienza unica tra la Pineta del Tombolo e 2,5 km di spiaggia libera sulla battigia con istruttore dedicato. Adatta anche a chi è alla prima esperienza.",
+        "Scegli la tua passeggiata a cavallo tra la Pineta del Tombolo e il mare: 2 ore oppure 2 ore e 45 minuti in riva al mare, con istruttore dedicato.",
       ogImageAlt: "Pineta e Spiaggia a Marina di Grosseto",
     },
     teaser: {
       title: "In Pineta e Spiaggia",
       subtitle: "L'incontro magico tra il bosco e il mare",
-      badge: "Più Richiesto",
+      badge: "2 Proposte",
     },
     heroImage: {
       src: "/pagine-servizi/foto-in-pineta-e-spiaggia.webp",
       alt: "Passeggiata privata a cavallo tra la Pineta del Tombolo e la battigia in riva al mare",
     },
     overview: {
-      lead: "Vivi la magia di una rilassante passeggiata a cavallo, tra la Pineta del Tombolo e la spiaggia. Accompagnato da una guida esperta, potrai goderti un percorso immerso nella natura, in un’atmosfera tranquilla e rigenerante.",
+      lead: "Vivi la magia di una rilassante passeggiata a cavallo tra la Pineta del Tombolo e la spiaggia. Accompagnato da una guida esperta, potrai goderti un percorso immerso nella natura, in un’atmosfera tranquilla e rigenerante.",
       paragraphs: [
-        "L'itinerario si sviluppa lungo i sentieri protetti e ombreggiati della secolare Pineta del Tombolo, dove il profumo inconfondibile di pini marittimi e macchia mediterranea scandisce i primi passi in sella. Dalla quiete ovattata del bosco si passa gradualmente alla zona retrodunale, fino a schiudersi davanti allo spettacolo aperto del Mar Tirreno.",
-        "Una volta raggiunta la costa, vivrai l'emozione straordinaria di percorrere ben 2,5 km di spiaggia libera direttamente sulla battigia. Il suono ritmico della risacca e la brezza marina accompagneranno ogni momento, con la costante presenza di un istruttore dedicato che assicurerà serenità, supporto e cura a ciascun cavaliere.",
+        "L'itinerario si sviluppa lungo i sentieri protetti e ombreggiati della secolare Pineta del Tombolo, dove il profumo inconfondibile di pini marittimi e macchia mediterranea scandisce i primi passi in sella, fino a schiudersi davanti allo spettacolo aperto del Mar Tirreno.",
+        "Scegli la formula che preferisci: due ore con un tratto di spiaggia libera, oppure due ore e quarantacinque minuti con ben 2,5 km direttamente sulla battigia. In entrambi i casi un istruttore dedicato assicura serenità, supporto e cura a ciascun cavaliere.",
       ],
     },
-    pricing: {
-      title: "Quota di Partecipazione",
-      options: [
+    proposals: {
+      eyebrow: "Scegli la tua passeggiata",
+      title: "Due Modi di Vivere il Mare",
+      sharedEyebrow: "Valido per entrambe le passeggiate",
+      sharedTitle: "Prima di Partire",
+      items: [
         {
-          label: "Esperienza Privata con Istruttore Dedicato",
-          tone: "pine",
-          price: "€100",
-          unit: "a persona",
-          condition: "(minimo 2 partecipanti)",
-          description:
-            "La formula ideale per coppie o piccoli gruppi di amici desiderosi di vivere un'avventura autentica ed esclusiva: 2 ore e 45 minuti di pura connessione con il cavallo e il mare della Maremma.",
+          id: "passeggiata-2-ore",
+          number: "Proposta 01",
+          title: "Passeggiata privata a cavallo – 2 ore",
+          tagline: "Un’esperienza rilassante, adatta anche a principianti",
+          badge: "Pineta e spiaggia",
+          image: {
+            src: "/gallery/in-pineta/dsc03362.jpg",
+            alt: "Cavaliere al passo tra i pini marittimi della Pineta del Tombolo",
+          },
+          highlights: [
+            { value: "2 ore", label: "Durata" },
+            { value: "1 km", label: "di spiaggia libera" },
+          ],
+          facts: [
+            { icon: "pin", label: "Percorso", value: "Pineta e breve tratto di spiaggia (1 km di spiaggia libera)" },
+            { icon: "user", label: "Guida", value: "Istruttore dedicato per l’intera durata" },
+            { icon: "level", label: "Livello richiesto", value: "Adatto anche a chi è alla prima esperienza" },
+            { icon: "age", label: "Età minima", value: "14 anni" },
+            { icon: "weight", label: "Peso massimo", value: "90 kg" },
+            { icon: "group", label: "Partecipanti ideali", value: "Coppie o piccoli gruppi di amici" },
+          ],
+          whatsappMessage:
+            "Ciao Cavallo Natura! Vorrei prenotare la passeggiata privata da 2 ore (pineta e breve tratto di spiaggia). Potete indicarmi le disponibilità?",
+        },
+        {
+          id: "passeggiata-2-ore-45-minuti",
+          number: "Proposta 02",
+          title: "Passeggiata privata a cavallo – 2 ore e 45 minuti, in riva al mare",
+          tagline: "Un’esperienza unica, adatta anche a principianti",
+          badge: "Più mare",
+          image: {
+            src: "/gallery/in-riva-al-mare/dsc04964.jpg",
+            alt: "Binomio a cavallo in riva al mare al tramonto",
+          },
+          highlights: [
+            { value: "2 h 45", label: "Durata" },
+            { value: "2,5 km", label: "sulla battigia" },
+            { value: "20 set – 20 mag", label: "Periodo" },
+          ],
+          facts: [
+            { icon: "pin", label: "Percorso", value: "Pineta e 2,5 km di spiaggia libera, da percorrere sulla battigia" },
+            { icon: "user", label: "Guida", value: "Istruttore dedicato per l’intera durata" },
+            { icon: "level", label: "Livello richiesto", value: "Adatto anche a chi è alla prima esperienza" },
+            { icon: "age", label: "Età minima", value: "14 anni" },
+            { icon: "weight", label: "Peso massimo", value: "90 kg" },
+            { icon: "group", label: "Partecipanti ideali", value: "Coppie o piccoli gruppi di amici" },
+          ],
+          whatsappMessage:
+            "Ciao Cavallo Natura! Vorrei prenotare la passeggiata privata da 2 ore e 45 minuti in riva al mare. Potete indicarmi le disponibilità?",
         },
       ],
-      note: "Istruttore dedicato esclusivo e cap protettivi inclusi per tutti.",
-      source: "Tariffa ufficiale locandina",
     },
-    details: [
-      {
-        icon: "clock",
-        title: "Durata & Percorso",
-        value: "2 ore e 45 minuti",
-        period: "Periodo: dal 20 settembre al 20 maggio",
-        items: [
-          "Percorso: pineta e 2,5 km di spiaggia libera, da percorrere sulla battigia.",
-          "Periodo: dal 20 settembre al 20 maggio.",
-          "Tracciati sabbiosi all'interno della Pineta del Tombolo fino al litorale incontaminato di Marina di Grosseto.",
-        ],
-      },
-      {
-        icon: "compass",
-        title: "Guida & Partecipanti",
-        items: [
-          "Istruttore dedicato per l’intera durata.",
-          "Partecipanti ideali: coppie o piccoli gruppi di amici.",
-          "Esperienza privata pensata per garantire riservatezza, serenità e cura di ogni particolare.",
-        ],
-      },
-      {
-        icon: "shield",
-        title: "Livello & Requisiti",
-        items: [
-          "Livello richiesto: adatto anche a chi è alla prima esperienza.",
-          "Età minima: 14 anni.",
-          "Peso massimo: 90 kg.",
-        ],
-      },
-      ABBIGLIAMENTO_STANDARD,
-    ],
+    details: [ABBIGLIAMENTO_STANDARD],
     video: {
       src: "/videos/esperienze/in-pineta-e-spiaggia.mp4",
       poster: "/pagine-servizi/foto-in-pineta-e-spiaggia.webp",
       caption:
         "L'emozione autentica di cavalcare lungo la battigia, accompagnati dal respiro del mare e dalla brezza marina.",
-      ariaLabel: "Video della passeggiata privata a cavallo di 2 ore e 45 minuti in riva al mare",
+      ariaLabel: "Video delle passeggiate a cavallo tra la pineta e il mare",
     },
     gallery: [
       { src: "/gallery/in-riva-al-mare/dsc04792.jpg", alt: "Passeggiata a cavallo in riva al mare con la brezza marina" },
-      { src: "/gallery/in-riva-al-mare/dsc04964.jpg", alt: "Binomio a cavallo in riva al mare al tramonto" },
+      { src: "/gallery/in-riva-al-mare/dsc05294.jpg", alt: "Emozione unica di cavalcare a pochi passi dalle onde" },
       { src: "/gallery/in-riva-al-mare/dsc05390.jpg", alt: "Momento di totale libertà a cavallo sulla spiaggia" },
       { src: "/gallery/in-riva-al-mare/dsc06470.jpg", alt: "Colori caldi del tramonto sulla spiaggia di Marina di Grosseto" },
     ],
     cta: {
       eyebrow: "Prenotazione Rapida",
       title: "Pronto a Vivere la Magia in Riva al Mare?",
-      text: "Verifica subito la disponibilità di Pineta e Spiaggia: scrivici su WhatsApp per fissare la data e l'orario ideali per te e i tuoi compagni di avventura.",
+      text: "Verifica subito la disponibilità: scrivici su WhatsApp e scegli tra la passeggiata di 2 ore e quella di 2 ore e 45 minuti. Fisseremo insieme la data e l'orario ideali per te e i tuoi compagni di avventura.",
     },
     whatsappMessage:
-      "Ciao Cavallo Natura! Vorrei prenotare l'esperienza Pineta e Spiaggia. Potete indicarmi le disponibilità?",
+      "Ciao Cavallo Natura! Vorrei prenotare una passeggiata Pineta e Spiaggia. Potete indicarmi le disponibilità e le differenze tra le due proposte?",
   },
 
   "per-esperti": {
