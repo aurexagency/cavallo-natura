@@ -30,18 +30,12 @@ export default function HeroSequence() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<Status>("loading");
-  const [loadingProgress, setLoadingProgress] = useState(0);
 
-  // Progresso di caricamento dal buffer del video (solo per la UI di attesa)
+  // Stato di caricamento del video (il poster è visibile nel frattempo)
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    const onProgress = () => {
-      if (!video.duration || video.buffered.length === 0) return;
-      const buffered = video.buffered.end(video.buffered.length - 1);
-      setLoadingProgress(Math.min(100, Math.round((buffered / video.duration) * 100)));
-    };
     const onReady = () => {
       video.pause();
       setStatus("ready");
@@ -51,7 +45,6 @@ export default function HeroSequence() {
       setStatus("error");
     };
 
-    video.addEventListener("progress", onProgress);
     video.addEventListener("loadeddata", onReady);
     video.addEventListener("error", onError);
 
@@ -59,10 +52,8 @@ export default function HeroSequence() {
     // che React agganci i listener: in quel caso lo stato va letto subito.
     if (video.error) onError();
     else if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) onReady();
-    else onProgress();
 
     return () => {
-      video.removeEventListener("progress", onProgress);
       video.removeEventListener("loadeddata", onReady);
       video.removeEventListener("error", onError);
     };
@@ -148,18 +139,8 @@ export default function HeroSequence() {
         Cavallo Natura | Centro Equestre in Maremma Toscana
       </h1>
 
-      {status === "loading" && (
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-[var(--color-sand)] text-[var(--color-saddle)]">
-          <span className="text-5xl animate-pulse mb-6" aria-hidden="true">
-            🐎
-          </span>
-          <p className="font-display text-xl font-semibold tracking-wide">
-            Caricamento... {loadingProgress}%
-          </p>
-        </div>
-      )}
-
-      {/* Video di sfondo: muto, inline, controllato dallo scroll (nessun autoplay) */}
+      {/* Video di sfondo: muto, inline, controllato dallo scroll (nessun autoplay).
+          Durante il caricamento si vede subito il poster, senza schermata di attesa. */}
       <video
         ref={videoRef}
         src={HERO_VIDEO}
@@ -170,9 +151,7 @@ export default function HeroSequence() {
         disablePictureInPicture
         aria-hidden="true"
         tabIndex={-1}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-          status === "loading" ? "opacity-0" : "opacity-100"
-        }`}
+        className="absolute inset-0 w-full h-full object-cover"
       />
 
       {/* Velo per leggibilità */}
