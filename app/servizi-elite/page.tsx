@@ -69,6 +69,16 @@ const eliteServices: EliteService[] = [
     href: "/contatti?servizio=shooting",
     detailsHref: "/gallery#servizio-fotografico",
     detailsText: "Guarda la Gallery",
+  },
+  {
+    id: "sky-experience",
+    title: "Sky Experience",
+    description: "Un'emozione vista dall'alto. Vivi una passeggiata privata a cavallo tra la pineta del Tombolo e la spiaggia di Marina di Grosseto, mentre un drone immortala ogni istante con spettacolari riprese aeree: il modo più bello per trasformare la tua passeggiata in un ricordo indimenticabile.",
+    imageSrc: "/gallery/in-riva-al-mare/dsc05382.jpg",
+    imageAlt: "Passeggiata privata a cavallo sulla spiaggia di Marina di Grosseto al tramonto",
+    ctaText: "Prenota",
+    href: "/contatti?servizio=sky-experience",
+    detailsHref: "/servizi-elite/sky-experience",
   }
 ];
 
